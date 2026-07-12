@@ -1060,6 +1060,11 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     background: var(--ds-bg);
     position: relative;
     overflow: hidden;
+    z-index: 1;              /* queda debajo: Contacto lo pisa al hacer scroll */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .cta-block {
     text-align: center;
@@ -1258,7 +1263,7 @@ a.contact-card:hover {
     color: var(--accent);
     border-bottom-color: var(--accent);
 }
-.contact { padding-bottom: 40px; }
+.contact { padding-bottom: 40px; background: var(--bg); }
 
 /* ============================================================
    FLOATING BUTTONS

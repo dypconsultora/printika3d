@@ -624,7 +624,7 @@
         }
 
         // 2) Depth parallax on the decorative noise/grid backgrounds.
-        gsap.utils.toArray('.hero__noise, .process__noise, .cta-section__noise').forEach((bg) => {
+        gsap.utils.toArray('.hero__noise, .process__noise').forEach((bg) => {
             gsap.to(bg, {
                 yPercent: 18,
                 ease: 'none',
@@ -664,6 +664,21 @@
                 );
             }
         });
+
+        // 3b) Pin the CTA ("EMPEZA TU PROYECTO"): it freezes and the Contacto
+        //     section scrolls up and covers it. Desktop only.
+        if (canPin) {
+            const cta = document.querySelector('.cta-section');
+            if (cta) {
+                ScrollTrigger.create({
+                    trigger: cta,
+                    start: 'top top',
+                    end: 'bottom top',
+                    pin: true,
+                    pinSpacing: false
+                });
+            }
+        }
 
         // 4) FAQ items enter from alternating sides (1st left, 2nd right, ...),
         //    each one revealing as it scrolls into view (its own trigger).
