@@ -3,28 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTL Impresion 3D — Servicios de Impresion 3D Profesional</title>
+    <title>Printika 3D — Servicios de Impresión 3D Profesional</title>
     <meta name="description" content="Servicios profesionales de impresion 3D: prototipado, diseño, produccion en serie y acabados de alta calidad. Fabricacion local en Argentina.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=32">
 </head>
 <body>
 
     <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="container navbar__inner">
-            <a href="#" class="navbar__logo">BTL<span class="logo-dot"></span></a>
+            <a href="#" class="navbar__logo"><img src="assets/Innovacion-en-3D.svg" alt="Innovación en 3D" class="navbar__logo-img"></a>
             <ul class="navbar__links" id="navLinks">
                 <li><a href="#inicio" data-i18n="nav-inicio">INICIO</a></li>
                 <li><a href="#servicios" data-i18n="nav-servicios">SERVICIOS</a></li>
                 <li><a href="#proceso" data-i18n="nav-proceso">PROCESO</a></li>
                 <li><a href="#materiales" data-i18n="nav-materiales">MATERIALES</a></li>
+                <li><a href="#opiniones">OPINIONES</a></li>
+                <li><a href="#faq">FAQ</a></li>
                 <li><a href="#contacto" data-i18n="nav-contacto">CONTACTO</a></li>
             </ul>
             <div class="navbar__actions">
-                <a href="#contacto" class="btn btn--primary btn--sm" data-i18n="nav-cta">SOLICITAR PRESUPUESTO</a>
                 <div class="lang-switch" id="langSwitch">
                     <button class="lang-switch__btn active" data-lang="es">ES</button>
                     <button class="lang-switch__btn" data-lang="en">EN</button>
@@ -50,7 +51,7 @@
                     <span class="pulse-dot"></span>
                     <span data-i18n="hero-tag">SERVICIO PROFESIONAL DE IMPRESION 3D</span>
                 </span>
-                <h1 class="hero__title reveal">
+                <h1 class="hero__title">
                     <span class="hero__title-line" data-i18n="hero-t1">CONVERTIMOS</span>
                     <span class="hero__title-line" data-i18n="hero-t2">ARCHIVOS EN</span>
                     <span class="hero__title-line hero__title-line--accent" data-i18n="hero-t3">OBJETOS REALES</span>
@@ -106,32 +107,10 @@
         </div>
     </section>
 
-    <!-- MARQUEE -->
-    <section class="marquee-section">
-        <div class="marquee">
-            <div class="marquee__track">
-                <span>PROTOTIPADO RAPIDO</span><span class="marquee__sep">/</span>
-                <span>MODELADO 3D</span><span class="marquee__sep">/</span>
-                <span>PRODUCCION EN SERIE</span><span class="marquee__sep">/</span>
-                <span>ACABADOS PREMIUM</span><span class="marquee__sep">/</span>
-                <span>DISEÑO INDUSTRIAL</span><span class="marquee__sep">/</span>
-                <span>IMPRESION FDM</span><span class="marquee__sep">/</span>
-                <span>RESINA SLA</span><span class="marquee__sep">/</span>
-                <span>PROTOTIPADO RAPIDO</span><span class="marquee__sep">/</span>
-                <span>MODELADO 3D</span><span class="marquee__sep">/</span>
-                <span>PRODUCCION EN SERIE</span><span class="marquee__sep">/</span>
-                <span>ACABADOS PREMIUM</span><span class="marquee__sep">/</span>
-                <span>DISEÑO INDUSTRIAL</span><span class="marquee__sep">/</span>
-                <span>IMPRESION FDM</span><span class="marquee__sep">/</span>
-                <span>RESINA SLA</span><span class="marquee__sep">/</span>
-            </div>
-        </div>
-    </section>
-
     <!-- SERVICIOS -->
     <section class="section services" id="servicios">
         <div class="container">
-            <div class="section__header reveal">
+            <div class="section__header">
                 <span class="section__tag" data-i18n="srv-tag">NUESTROS SERVICIOS</span>
                 <h2 class="section__title" data-i18n="srv-title">TODO LO QUE NECESITAS<br>PARA MATERIALIZAR TU IDEA</h2>
             </div>
@@ -181,6 +160,16 @@
         </div>
     </section>
 
+    <!-- PARALLAX BAND 1 -->
+    <section class="parallax-band">
+        <div class="parallax-band__img" style="background-image:url('assets/printer-3d.jpg')"></div>
+        <div class="parallax-band__overlay"></div>
+        <div class="container parallax-band__content">
+            <span class="parallax-band__tag">TECNOLOGIA FDM &amp; RESINA SLA</span>
+            <h2 class="parallax-band__title">PRECISION EN<br>CADA CAPA</h2>
+        </div>
+    </section>
+
     <!-- PROCESO (DARK) -->
     <section class="section process dark-section" id="proceso">
         <div class="process__noise"></div>
@@ -220,7 +209,7 @@
     <!-- MATERIALES -->
     <section class="section materials" id="materiales">
         <div class="container">
-            <div class="section__header reveal">
+            <div class="section__header">
                 <span class="section__tag" data-i18n="mat-tag">MATERIALES</span>
                 <h2 class="section__title" data-i18n="mat-title">ELEGIMOS EL MATERIAL<br>SEGUN TU PROYECTO</h2>
             </div>
@@ -268,10 +257,20 @@
         </div>
     </section>
 
+    <!-- PARALLAX BAND 2 -->
+    <section class="parallax-band">
+        <div class="parallax-band__img" style="background-image:url('assets/piezas-3d.jpg')"></div>
+        <div class="parallax-band__overlay"></div>
+        <div class="container parallax-band__content">
+            <span class="parallax-band__tag">PIEZAS REALES</span>
+            <h2 class="parallax-band__title">DE PROTOTIPO<br>A PRODUCCION</h2>
+        </div>
+    </section>
+
     <!-- APLICACIONES (DARK) -->
     <section class="section applications dark-section">
         <div class="container">
-            <div class="section__header reveal" style="text-align:center;margin-bottom:48px;">
+            <div class="section__header" style="text-align:center;margin-bottom:48px;">
                 <span class="section__tag" data-i18n="app-tag">APLICACIONES</span>
                 <h2 class="section__title" data-i18n="app-title">DONDE SE APLICA<br>LA IMPRESION 3D</h2>
             </div>
@@ -303,7 +302,7 @@
     <!-- POR QUE ELEGIRNOS -->
     <section class="section why-us">
         <div class="container">
-            <div class="section__header reveal" style="text-align:center;margin-bottom:56px;">
+            <div class="section__header" style="text-align:center;margin-bottom:56px;">
                 <span class="section__tag" data-i18n="why-tag">POR QUE ELEGIR BTL</span>
                 <h2 class="section__title" data-i18n="why-title">VENTAJAS QUE MARCAN<br>LA DIFERENCIA</h2>
             </div>
@@ -340,6 +339,202 @@
         </div>
     </section>
 
+    <!-- OPINIONES -->
+    <section class="section reviews" id="opiniones">
+        <div class="container">
+            <div class="section__header" style="text-align:center;margin-bottom:16px;">
+                <span class="section__tag">OPINIONES</span>
+                <h2 class="section__title">LO QUE DICEN<br>NUESTROS CLIENTES</h2>
+            </div>
+            <div class="reviews__rating reveal">
+                <span class="reviews__stars">★★★★★</span>
+                <span class="reviews__rating-text">5.0 · Reseñas reales de clientes en Google</span>
+            </div>
+            <div class="reviews__carousel reveal">
+                <button class="reviews__arrow reviews__arrow--prev" id="reviewsPrev" aria-label="Anterior">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <div class="reviews__track" id="reviewsTrack">
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">La verdad un genio Hernán, la IA me pasó la dirección, fui, me atendió muy amablemente, le llevé lo que quería hacer y al otro día tuvo el producto terminado. 100% recomendable.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">R</span><span class="review-card__name">Ramón Esteban Zamudio</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Excelente producto y atención! El muñeco quedó tal cual lo pedí, con alto nivel de detalle, y lo hicieron en menos de 24 hs. Sin dudas los recomiendo y volvería a elegirlos!</p>
+                    <div class="review-card__author"><span class="review-card__avatar">C</span><span class="review-card__name">Carla De Bonis</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">A las 10 a.m. le consulté por unas identificaciones para mi gata y para las 13 ya las tenía hechas. Rápido, muy bueno y buen precio. Totalmente recomendable.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">J</span><span class="review-card__name">Jorge García</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Excelente producto, rápido y muy buena atención.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">P</span><span class="review-card__name">Pablo Heredia</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Realmente, la atención fue increíble desde el momento uno. Estábamos muy cortas de tiempo y nos ayudó a solucionar increíblemente, y el resultado final fue muchísimo mejor de lo que creíamos posible. Era un trabajo bastante complicado y pudo ayudarnos a resolverlo. ¡Gracias Hernán! ❤️</p>
+                    <div class="review-card__author"><span class="review-card__avatar">D</span><span class="review-card__name">Delfi Fernández</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Excelente atención y muy paciente, las impresiones quedaron justo a la medida y de muy buena calidad, todo quedó tal como lo esperaba 👌</p>
+                    <div class="review-card__author"><span class="review-card__avatar">F</span><span class="review-card__name">Fran</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">La rapidez, seriedad y exactitud en la impresión y vectorización son extraordinarias. Le encomendé un trabajo de bajo costo y, por un ínfimo detalle en la pieza, por iniciativa propia realizó dos. Además, el precio muy bueno.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">J</span><span class="review-card__name">Jorge Enrique Godoy</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Un genio Hernán, atención y respuesta rápida 24/7, y la terminación y calidad del producto buenísimo! Precio más que accesible.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">J</span><span class="review-card__name">Juan Bonardi</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Buenísima atención. Me ayudó a asesorarme, respondió rápido y hasta me hizo una muestra en tiempo récord.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">F</span><span class="review-card__name">Felipe Ornella</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Buenísimo! Me fue mostrando los cambios que le pedí a los trabajos 😃🤗 Gracias.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">W</span><span class="review-card__name">Wan Wicz</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Un genio!! Súper rápido y la calidad del trabajo es genial.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">D</span><span class="review-card__name">Dro</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Le pedí un presupuesto de un objeto simil real para mis prácticas profesionales y en aproximadamente una semana lo teníamos armado. Supo sortear los distintos obstáculos y en cada paso de impresión me envió fotos. Muy buena atención y producto final, volveré a comprar.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">C</span><span class="review-card__name">Cristian Maghenzani</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Hermosos productos! El material y las terminaciones son excelentes. Súper recomiendo!!</p>
+                    <div class="review-card__author"><span class="review-card__avatar">M</span><span class="review-card__name">Magali Gargano</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Me solucionó en el día un problema de un repuesto que no conseguía: diseñó e imprimió una copia exacta del original.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">L</span><span class="review-card__name">Lionel Ciot</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Hernán es un genio, un capo! Espectaculares los diseños que le pido!!!</p>
+                    <div class="review-card__author"><span class="review-card__avatar">D</span><span class="review-card__name">Daniel Iannibelli</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Excelente trato de Hernán, y he quedado muy satisfecha con las impresiones de dos muñecos. Muy recomendable, muchas gracias!!</p>
+                    <div class="review-card__author"><span class="review-card__avatar">S</span><span class="review-card__name">Sandra Faimali</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Ahhh me encantó el difusor, tanto el diseño como el aroma. Gracias 😘</p>
+                    <div class="review-card__author"><span class="review-card__avatar">Z</span><span class="review-card__name">Zulma Casem</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Muy buena la atención y excelentes las impresiones 🙂👌</p>
+                    <div class="review-card__author"><span class="review-card__avatar">L</span><span class="review-card__name">Luciana Cano</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Excelentes productos y espectacular atención de Hernán.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">N</span><span class="review-card__name">Néstor</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Le mandé mensaje si me podía hacer una pieza adaptador para un disco SSD de la compu, me la hizo en el mismo día, quedó 10 puntos y me dejó una más de repuesto. Un crack.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">M</span><span class="review-card__name">Martín Dangelcola</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Excelente trabajo!!! De primera!!!</p>
+                    <div class="review-card__author"><span class="review-card__avatar">S</span><span class="review-card__name">Sebastián Bilbao</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Un tipazo Hernán, necesitaba unas piezas para la facultad con urgencia y me pudo imprimir todo de un día para el otro. Impecable el trabajo y muy buena predisposición.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">A</span><span class="review-card__name">Azul Álvarez Lozano</span></div>
+                </article>
+                <article class="review-card">
+                    <div class="review-card__stars">★★★★★</div>
+                    <p class="review-card__text">Excelente trabajo y muy buena atención. Muy recomendable.</p>
+                    <div class="review-card__author"><span class="review-card__avatar">N</span><span class="review-card__name">Natalia Plaul</span></div>
+                </article>
+                </div>
+                <button class="reviews__arrow reviews__arrow--next" id="reviewsNext" aria-label="Siguiente">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+            </div>
+            <div class="reviews__dots" id="reviewsDots"></div>
+        </div>
+    </section>
+
+    <!-- FAQ (DARK) -->
+    <section class="section faq dark-section" id="faq">
+        <div class="container">
+            <div class="section__header" style="text-align:center;margin-bottom:48px;">
+                <span class="section__tag">PREGUNTAS FRECUENTES</span>
+                <h2 class="section__title">RESOLVEMOS<br>TUS DUDAS</h2>
+            </div>
+            <div class="faq__list">
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Por qué elegir productos de impresión 3D para el hogar y el escritorio?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Porque permiten soluciones funcionales, personalizadas en diseño y de rápida producción, ideales para organizar, decorar y aprovechar mejor cada espacio.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Qué tipo de productos impresos en 3D venden?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Ofrecemos difusores, organizadores, accesorios decorativos y objetos funcionales impresos en 3D, diseñados para uso diario y estética moderna.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Hacen envíos a todo el país?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Sí, realizamos envíos a todo el país. El costo y el tiempo de entrega se calculan automáticamente durante el proceso de compra.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿De qué material están hechos los productos?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Nuestros productos están fabricados en PLA, un material resistente, liviano y de origen vegetal, ideal para productos impresos en 3D de uso cotidiano.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Los productos impresos en 3D son resistentes?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Sí, están pensados para un uso normal diario. Recomendamos evitar golpes fuertes y exposición prolongada a altas temperaturas.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Los productos son personalizados?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Actualmente trabajamos con modelos estándar y personalizados dependiendo de la necesidad del cliente.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Cuánto demora el despacho del pedido?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Varía según el producto o productos seleccionados. Si están en stock, al día siguiente se despacha; si es personalizado, depende del tiempo de impresión, que se informa al momento de la consulta o la compra.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Puedo retirar mi pedido?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Sí, ofrecemos retiro coordinado. Una vez realizada la compra, nos contactamos para coordinar día y horario.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Qué medios de pago aceptan?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Aceptamos tarjetas de crédito, débito, transferencias y medios de pago digitales, según disponibilidad en la tienda online.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Los productos tienen garantía?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Sí. Si tu producto presenta una falla de fabricación, podés contactarnos dentro de los 10 días posteriores a recibirlo.</p></div>
+                </details>
+                <details class="faq-item reveal">
+                    <summary class="faq-item__q">¿Cómo debo cuidar los productos?<span class="faq-item__icon"></span></summary>
+                    <div class="faq-item__a"><p>Evitá el calor excesivo, no los expongas al sol directo y limpialos con un paño seco o ligeramente húmedo.</p></div>
+                </details>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA (DARK) -->
     <section class="section cta-section dark-section">
         <div class="cta-section__noise"></div>
@@ -353,7 +548,7 @@
                         PEDIR PRESUPUESTO
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
                     </a>
-                    <a href="https://wa.me/5491132274695" target="_blank" class="btn btn--outline-light btn--lg">
+                    <a href="https://wa.me/5491131373425" target="_blank" class="btn btn--outline-light btn--lg">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.37 0-4.567-.68-6.434-1.852l-.448-.29-2.648.888.888-2.648-.29-.448A9.96 9.96 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
                         WHATSAPP
                     </a>
@@ -372,22 +567,22 @@
                     <p class="contact__desc" data-i18n="ct-desc">Respondemos en menos de 24hs. Tambien podes escribirnos directo por WhatsApp.</p>
 
                     <div class="contact__cards">
-                        <a href="mailto:hola@btlimpresion3d.com.ar" class="contact-card">
+                        <a href="mailto:consultas@printika.com" class="contact-card">
                             <div class="contact-card__icon">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                             </div>
                             <div>
                                 <span class="contact-card__label" data-i18n="ct-label-email">EMAIL</span>
-                                <span class="contact-card__value">hola@btlimpresion3d.com.ar</span>
+                                <span class="contact-card__value">consultas@printika.com</span>
                             </div>
                         </a>
-                        <a href="https://wa.me/5491132274695" target="_blank" class="contact-card">
+                        <a href="https://wa.me/5491131373425" target="_blank" class="contact-card">
                             <div class="contact-card__icon">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
                             </div>
                             <div>
                                 <span class="contact-card__label" data-i18n="ct-label-phone">WHATSAPP</span>
-                                <span class="contact-card__value">+54 11 3227-4695</span>
+                                <span class="contact-card__value">+54 11 3137-3425</span>
                             </div>
                         </a>
                         <div class="contact-card">
@@ -404,14 +599,9 @@
                     <div class="contact__social-card">
                         <span class="contact-card__label" data-i18n="ct-label-social">REDES SOCIALES</span>
                         <div class="contact__social">
-                            <a href="https://www.instagram.com/btl.impresion3d/" target="_blank" rel="noopener" aria-label="Instagram">
+                            <a href="https://www.instagram.com/printika3d/" target="_blank" rel="noopener" aria-label="Instagram">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-                            </a>
-                            <a href="#" aria-label="Facebook">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-                            </a>
-                            <a href="#" aria-label="TikTok">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
+                                <span class="contact__social-user">@printika3d</span>
                             </a>
                         </div>
                     </div>
@@ -464,13 +654,16 @@
     </section>
 
     <!-- FLOATING BUTTONS -->
-    <a href="https://wa.me/5491132274695" target="_blank" class="float-btn float-btn--wa" aria-label="WhatsApp">
+    <a href="https://wa.me/5491131373425" target="_blank" class="float-btn float-btn--wa" aria-label="WhatsApp">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.37 0-4.567-.68-6.434-1.852l-.448-.29-2.648.888.888-2.648-.29-.448A9.96 9.96 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
     </a>
     <button class="float-btn float-btn--top" id="scrollTop" aria-label="Volver arriba">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
     </button>
 
-    <script src="js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+    <script src="js/main.js?v=26"></script>
 </body>
 </html>

@@ -307,7 +307,6 @@
 
     // --- Scroll Reveal (Intersection Observer with stagger) ---
     const revealElements = document.querySelectorAll('.reveal');
-    let revealIndex = 0;
     const revealObserver = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
@@ -493,6 +492,181 @@
                 alert('No pudimos enviar el mensaje. Escribinos por WhatsApp o intentalo de nuevo.');
             }
         });
+    }
+
+    // --- Reviews Carousel ---
+    const rvTrack = document.getElementById('reviewsTrack');
+    if (rvTrack) {
+        const rvPrev = document.getElementById('reviewsPrev');
+        const rvNext = document.getElementById('reviewsNext');
+        const rvDots = document.getElementById('reviewsDots');
+        const cards = Array.from(rvTrack.children);
+
+        // Cards visible per view — mirrors the CSS breakpoints.
+        // Cached and refreshed on build/resize so a per-click read of innerWidth isn't needed.
+        let cpv = 3;
+        const computePerView = () => {
+            const w = window.innerWidth;
+            if (w > 0 && w <= 768) return 1;
+            if (w > 0 && w <= 1024) return 2;
+            return 3;
+        };
+        const pageCount = () => Math.max(1, Math.ceil(cards.length / cpv));
+        const cardOffset = (i) => cards[i].offsetLeft - cards[0].offsetLeft;
+
+        const currentPage = () => {
+            let best = 0, min = Infinity;
+            cards.forEach((c, i) => {
+                const d = Math.abs(cardOffset(i) - rvTrack.scrollLeft);
+                if (d < min) { min = d; best = i; }
+            });
+            return Math.round(best / cpv);
+        };
+
+        function goToPage(p) {
+            const total = pageCount();
+            p = Math.max(0, Math.min(total - 1, p));
+            const idx = Math.min(cards.length - 1, p * cpv);
+            rvTrack.scrollTo({ left: cardOffset(idx), behavior: 'smooth' });
+        }
+
+        function updateCarousel() {
+            const idx = currentPage();
+            if (rvDots) {
+                Array.from(rvDots.children).forEach((d, i) => d.classList.toggle('active', i === idx));
+            }
+            if (rvPrev) rvPrev.disabled = rvTrack.scrollLeft <= 2;
+            if (rvNext) rvNext.disabled = rvTrack.scrollLeft >= (rvTrack.scrollWidth - rvTrack.clientWidth - 2);
+        }
+
+        function buildDots() {
+            if (!rvDots) return;
+            cpv = computePerView();
+            const n = pageCount();
+            rvDots.innerHTML = '';
+            for (let i = 0; i < n; i++) {
+                const b = document.createElement('button');
+                b.className = 'reviews__dot';
+                b.setAttribute('aria-label', 'Ir a pagina ' + (i + 1));
+                b.addEventListener('click', () => goToPage(i));
+                rvDots.appendChild(b);
+            }
+            updateCarousel();
+        }
+
+        if (rvPrev) rvPrev.addEventListener('click', () => goToPage(currentPage() - 1));
+        if (rvNext) rvNext.addEventListener('click', () => goToPage(currentPage() + 1));
+        rvTrack.addEventListener('scroll', updateCarousel, { passive: true });
+
+        let rvResizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(rvResizeTimer);
+            rvResizeTimer = setTimeout(buildDots, 200);
+        });
+
+        buildDots();
+        window.addEventListener('load', buildDots);
+    }
+
+    // --- GSAP ScrollTrigger effects ---
+    // Reveals are handled by the IntersectionObserver above (never hides content if GSAP stalls);
+    // GSAP here only adds scroll-linked parallax, which merely offsets position.
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (window.gsap && window.ScrollTrigger && !reduceMotion) {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1) Premium headline reveals with SplitText (lines rise from behind a mask).
+        //    Runs after fonts load so line breaks are correct. Failsafe: if SplitText is
+        //    unavailable, headings simply stay visible (they carry no CSS hidden state).
+        if (window.SplitText) {
+            gsap.registerPlugin(SplitText);
+
+            const revealHeading = (title, opts) => {
+                opts = opts || {};
+                let split;
+                try {
+                    split = SplitText.create(title, { type: 'lines', mask: 'lines', linesClass: 'split-line' });
+                } catch (e) { return; }
+                const tl = gsap.timeline(opts.scrollTrigger ? { scrollTrigger: opts.scrollTrigger } : { delay: opts.delay || 0 });
+                if (opts.tag) {
+                    tl.from(opts.tag, { y: 24, autoAlpha: 0, duration: 0.6, ease: 'power3.out' }, 0);
+                }
+                tl.from(split.lines, {
+                    yPercent: 115,
+                    autoAlpha: 0,
+                    duration: 1,
+                    ease: 'expo.out',
+                    stagger: 0.12
+                }, opts.tag ? 0.1 : 0);
+                return tl;
+            };
+
+            const startHeadings = () => {
+                const hero = document.querySelector('.hero__title');
+                if (hero) revealHeading(hero, { delay: 0.15 });
+
+                gsap.utils.toArray('.section__title').forEach((title) => {
+                    const header = title.closest('.section__header') || title.parentElement;
+                    const tag = header ? header.querySelector('.section__tag') : null;
+                    revealHeading(title, {
+                        tag: tag,
+                        scrollTrigger: { trigger: header, start: 'top 85%', once: true }
+                    });
+                });
+                ScrollTrigger.refresh();
+            };
+
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(startHeadings);
+            } else {
+                startHeadings();
+            }
+        }
+
+        // 2) Depth parallax on the decorative noise/grid backgrounds.
+        gsap.utils.toArray('.hero__noise, .process__noise, .cta-section__noise').forEach((bg) => {
+            gsap.to(bg, {
+                yPercent: 18,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: bg.parentElement,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+        });
+
+        // 3) Pin each full-height image band: it freezes on screen while the next
+        //    section scrolls up and slides over it. On mobile, fall back to a soft drift.
+        const canPin = window.matchMedia('(min-width: 769px)').matches;
+        gsap.utils.toArray('.parallax-band').forEach((band) => {
+            const img = band.querySelector('.parallax-band__img');
+            if (canPin) {
+                gsap.timeline({
+                    scrollTrigger: {
+                        trigger: band,
+                        start: 'top top',
+                        end: 'bottom top',
+                        pin: true,
+                        pinSpacing: false,
+                        scrub: true
+                    }
+                }).fromTo(img, { scale: 1.04 }, { scale: 1.14, ease: 'none' });
+            } else {
+                gsap.fromTo(img,
+                    { yPercent: -10 },
+                    {
+                        yPercent: 10,
+                        ease: 'none',
+                        scrollTrigger: { trigger: band, start: 'top bottom', end: 'bottom top', scrub: true }
+                    }
+                );
+            }
+        });
+
+        // Recalculate once everything (fonts, images, carousel) has settled.
+        window.addEventListener('load', () => ScrollTrigger.refresh());
     }
 
 })();
