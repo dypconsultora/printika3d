@@ -237,6 +237,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .navbar.scrolled .navbar__logo-img {
     height: 68px;
 }
+/* Logo: version clara (iso/frase oscuros) por defecto; version dark (iso/frase en blanco) sobre fondos oscuros */
+.navbar__logo-img--dark { display: none; }
+[data-theme="dark"] .navbar__logo-img--light,
+.navbar.over-dark .navbar__logo-img--light { display: none; }
+[data-theme="dark"] .navbar__logo-img--dark,
+.navbar.over-dark .navbar__logo-img--dark { display: block; }
 .logo-dot {
     display: inline-block;
     width: 8px;
