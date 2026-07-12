@@ -114,7 +114,7 @@ try {
         . '<table style="width:100%;border-collapse:collapse;margin-bottom:20px;">' . $rowsHtml . '</table>'
         . '<h3 style="color:#555;margin-bottom:8px;">Mensaje:</h3>'
         . '<div style="padding:12px;background:#f8f8f8;border-left:3px solid #ff6a00;color:#222;">' . $msgHtml . '</div>'
-        . '<p style="color:#999;font-size:12px;margin-top:24px;">Enviado desde btlimpresion3d.com.ar</p>'
+        . '<p style="color:#999;font-size:12px;margin-top:24px;">Enviado desde printika3d.com</p>'
         . '</div>';
 
     $mail->AltBody = "Nombre: $name\nEmail: $email\nTelefono: $phone\nServicio: $service\n\nMensaje:\n$message";
