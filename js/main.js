@@ -665,22 +665,21 @@
             }
         });
 
-        // 4) FAQ items enter from alternating sides (1st left, 2nd right, ...).
-        const faqItems = gsap.utils.toArray('.faq-item');
-        if (faqItems.length) {
-            gsap.from(faqItems, {
-                x: (i) => (i % 2 === 0 ? -80 : 80),
+        // 4) FAQ items enter from alternating sides (1st left, 2nd right, ...),
+        //    each one revealing as it scrolls into view (its own trigger).
+        gsap.utils.toArray('.faq-item').forEach((item, i) => {
+            gsap.from(item, {
+                x: i % 2 === 0 ? -80 : 80,
                 autoAlpha: 0,
                 duration: 0.7,
                 ease: 'power3.out',
-                stagger: 0.1,
                 scrollTrigger: {
-                    trigger: document.getElementById('faq'),
-                    start: 'top 75%',
+                    trigger: item,
+                    start: 'top 85%',
                     once: true
                 }
             });
-        }
+        });
 
         // Recalculate once everything (fonts, images, carousel) has settled.
         window.addEventListener('load', () => ScrollTrigger.refresh());
