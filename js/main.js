@@ -637,47 +637,37 @@
             });
         });
 
+        // Keep pins stable on mobile: don't refresh (and jump) when the browser
+        // address bar shows/hides and changes the viewport height.
+        ScrollTrigger.config({ ignoreMobileResize: true });
+
         // 3) Pin each full-height image band: it freezes on screen while the next
-        //    section scrolls up and slides over it. On mobile, fall back to a soft drift.
-        const canPin = window.matchMedia('(min-width: 769px)').matches;
+        //    section scrolls up and slides over it. Same on mobile and desktop.
         gsap.utils.toArray('.parallax-band').forEach((band) => {
             const img = band.querySelector('.parallax-band__img');
-            if (canPin) {
-                gsap.timeline({
-                    scrollTrigger: {
-                        trigger: band,
-                        start: 'top top',
-                        end: 'bottom top',
-                        pin: true,
-                        pinSpacing: false,
-                        scrub: true
-                    }
-                }).fromTo(img, { scale: 1.04 }, { scale: 1.14, ease: 'none' });
-            } else {
-                gsap.fromTo(img,
-                    { yPercent: -10 },
-                    {
-                        yPercent: 10,
-                        ease: 'none',
-                        scrollTrigger: { trigger: band, start: 'top bottom', end: 'bottom top', scrub: true }
-                    }
-                );
-            }
-        });
-
-        // 3b) Pin the CTA ("EMPEZA TU PROYECTO"): it freezes and the Contacto
-        //     section scrolls up and covers it. Desktop only.
-        if (canPin) {
-            const cta = document.querySelector('.cta-section');
-            if (cta) {
-                ScrollTrigger.create({
-                    trigger: cta,
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: band,
                     start: 'top top',
                     end: 'bottom top',
                     pin: true,
-                    pinSpacing: false
-                });
-            }
+                    pinSpacing: false,
+                    scrub: true
+                }
+            }).fromTo(img, { scale: 1.04 }, { scale: 1.14, ease: 'none' });
+        });
+
+        // 3b) Pin the CTA ("EMPEZA TU PROYECTO"): it freezes and the Contacto
+        //     section scrolls up and covers it. Same on mobile and desktop.
+        const cta = document.querySelector('.cta-section');
+        if (cta) {
+            ScrollTrigger.create({
+                trigger: cta,
+                start: 'top top',
+                end: 'bottom top',
+                pin: true,
+                pinSpacing: false
+            });
         }
 
         // 4) FAQ items enter from alternating sides (1st left, 2nd right, ...),
