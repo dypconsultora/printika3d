@@ -1,3 +1,6 @@
 .DS_Store
 .env
 diagnostico.php
+
+# Calculadora admin — credenciales de la base NO van a git
+calculadora-dyp-admin/config.php
