@@ -654,51 +654,34 @@
             }
         }
 
-        // 2) Depth parallax on the decorative noise/grid backgrounds.
-        gsap.utils.toArray('.hero__noise, .process__noise').forEach((bg) => {
-            gsap.to(bg, {
-                yPercent: 18,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: bg.parentElement,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: true
-                }
-            });
-        });
-
-        // Keep pins stable on mobile: don't refresh (and jump) when the browser
-        // address bar shows/hides and changes the viewport height.
         ScrollTrigger.config({ ignoreMobileResize: true });
 
-        // 3) Pin each full-height image band: it freezes on screen while the next
-        //    section scrolls up and slides over it. Same on mobile and desktop.
-        gsap.utils.toArray('.parallax-band').forEach((band) => {
-            const img = band.querySelector('.parallax-band__img');
-            gsap.timeline({
-                scrollTrigger: {
-                    trigger: band,
-                    start: 'top top',
-                    end: 'bottom top',
-                    pin: true,
-                    pinSpacing: false,
-                    scrub: true
-                }
-            }).fromTo(img, { scale: 1.04 }, { scale: 1.14, ease: 'none' });
-        });
-
-        // 3b) Pin the CTA ("EMPEZA TU PROYECTO"): it freezes and the Contacto
-        //     section scrolls up and covers it. Same on mobile and desktop.
-        const cta = document.querySelector('.cta-section');
-        if (cta) {
-            ScrollTrigger.create({
-                trigger: cta,
-                start: 'top top',
-                end: 'bottom top',
-                pin: true,
-                pinSpacing: false
+        // Los efectos atados al scroll (parallax con scrub y pins a pantalla completa)
+        // son costosos en móvil y traban el scroll: se corren SOLO en pantallas grandes.
+        const bigScreen = window.matchMedia('(min-width: 900px)').matches;
+        if (bigScreen) {
+            // 2) Depth parallax on the decorative noise/grid backgrounds.
+            gsap.utils.toArray('.hero__noise, .process__noise').forEach((bg) => {
+                gsap.to(bg, {
+                    yPercent: 18,
+                    ease: 'none',
+                    scrollTrigger: { trigger: bg.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
+                });
             });
+
+            // 3) Pin each full-height image band: freezes while the next section slides over it.
+            gsap.utils.toArray('.parallax-band').forEach((band) => {
+                const img = band.querySelector('.parallax-band__img');
+                gsap.timeline({
+                    scrollTrigger: { trigger: band, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false, scrub: true }
+                }).fromTo(img, { scale: 1.04 }, { scale: 1.14, ease: 'none' });
+            });
+
+            // 3b) Pin the CTA ("EMPEZA TU PROYECTO") and let Contacto slide over it.
+            const cta = document.querySelector('.cta-section');
+            if (cta) {
+                ScrollTrigger.create({ trigger: cta, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
+            }
         }
 
         // 4) FAQ items enter from alternating sides (1st left, 2nd right, ...),

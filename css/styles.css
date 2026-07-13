@@ -1656,11 +1656,22 @@ a.contact-card:hover {
 }
 
 @media (max-width: 768px) {
-    .navbar__links { display: none; }
+    /* Perf móvil: sin blur pesado (traba el scroll); fondo más opaco en su lugar */
     .navbar__inner {
         border-radius: 20px;
         padding: 10px 16px;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
     }
+    [data-theme="dark"] .navbar__inner,
+    [data-theme="dark"] .navbar.over-dark .navbar__inner { background: rgba(10, 18, 32, 0.94); }
+    [data-theme="light"] .navbar__inner { background: rgba(245, 249, 252, 0.94); }
+    /* Bandas y CTA no pinneados en móvil: altura razonable (no pantalla completa) */
+    .parallax-band { height: auto; min-height: 60vh; }
+    .cta-section { min-height: auto; }
+    .parallax-band__img { will-change: auto; }
+
+    .navbar__links { display: none; }
     .navbar__links.active {
         display: flex;
         flex-direction: column;
