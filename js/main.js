@@ -325,6 +325,20 @@
     );
     revealElements.forEach((el) => revealObserver.observe(el));
 
+    // --- Touch: activar efectos de hover al scrollear (spotlight en móvil) ---
+    if (window.matchMedia('(hover: none)').matches && 'IntersectionObserver' in window) {
+        const tapEls = document.querySelectorAll('.hero__card, .service-row, .process__step, .material-card, .application, .why-us__card, .review-card');
+        const tapObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    entry.target.classList.toggle('tap-active', entry.isIntersecting);
+                });
+            },
+            { rootMargin: '-35% 0px -35% 0px', threshold: 0 }
+        );
+        tapEls.forEach((el) => tapObserver.observe(el));
+    }
+
     // --- Navbar scroll effect ---
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {

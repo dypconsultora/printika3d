@@ -568,8 +568,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     transform-origin: left;
     transition: transform 0.5s var(--ease);
 }
-.hero__card:hover::before { transform: scaleX(1); }
-.hero__card:hover {
+.hero__card:hover::before, .hero__card.tap-active::before { transform: scaleX(1); }
+.hero__card:hover, .hero__card.tap-active {
     border-color: var(--border-hover);
     box-shadow: var(--card-shadow);
     transform: translateY(-6px);
@@ -586,7 +586,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     margin-bottom: 16px;
     transition: all 0.4s var(--ease);
 }
-.hero__card:hover .hero__card-icon {
+.hero__card:hover .hero__card-icon, .hero__card.tap-active .hero__card-icon {
     transform: scale(1.08);
 }
 .hero__card-label {
@@ -717,8 +717,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     background: var(--accent);
     transition: width 0.5s var(--ease);
 }
-.service-row:hover::after { width: 100%; }
-.service-row:hover { padding-left: 16px; }
+.service-row:hover::after, .service-row.tap-active::after { width: 100%; }
+.service-row:hover, .service-row.tap-active { padding-left: 16px; }
 
 .service-row__number {
     font-size: 2.6rem;
@@ -729,7 +729,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     transform-origin: center center;
     transition: transform 0.35s var(--ease-spring);
 }
-.service-row:hover .service-row__number {
+.service-row:hover .service-row__number, .service-row.tap-active .service-row__number {
     transform: scale(1.35);
 }
 .service-row__title {
@@ -740,7 +740,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     color: var(--text);
     transition: color 0.3s;
 }
-.service-row:hover .service-row__title { color: var(--accent); }
+.service-row:hover .service-row__title, .service-row.tap-active .service-row__title { color: var(--accent); }
 .service-row__desc {
     font-size: 0.92rem;
     color: var(--text-secondary);
@@ -763,7 +763,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     border-radius: 50px;
     transition: all 0.3s;
 }
-.service-row:hover .service-row__tags span {
+.service-row:hover .service-row__tags span, .service-row.tap-active .service-row__tags span {
     background: var(--accent);
     color: #fff;
     transform: scale(1.08);
@@ -816,12 +816,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     opacity: 0;
     transition: opacity 0.4s;
 }
-.process__step:hover {
+.process__step:hover, .process__step.tap-active {
     border-color: rgba(45,183,250,0.5);
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 34px rgba(45,183,250,0.35);
 }
-.process__step:hover::before { opacity: 1; }
+.process__step:hover::before, .process__step.tap-active::before { opacity: 1; }
 .process__step-number {
     font-size: 3.4rem;
     font-weight: 800;
@@ -878,8 +878,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     transform-origin: left;
     transition: transform 0.5s var(--ease);
 }
-.material-card:hover::before { transform: scaleX(1); }
-.material-card:hover {
+.material-card:hover::before, .material-card.tap-active::before { transform: scaleX(1); }
+.material-card:hover, .material-card.tap-active {
     border-color: var(--border-hover);
     box-shadow: var(--card-shadow);
     transform: translateY(-4px);
@@ -965,12 +965,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     opacity: 0;
     transition: opacity 0.4s;
 }
-.application:hover {
+.application:hover, .application.tap-active {
     border-color: rgba(45,183,250,0.5);
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(0,0,0,0.25), 0 0 34px rgba(45,183,250,0.35);
 }
-.application:hover::before { opacity: 1; }
+.application:hover::before, .application.tap-active::before { opacity: 1; }
 .application__number {
     display: block;
     font-size: 3.4rem;
@@ -1032,8 +1032,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     transform-origin: left;
     transition: transform 0.5s var(--ease);
 }
-.why-us__card:hover::before { transform: scaleX(1); }
-.why-us__card:hover {
+.why-us__card:hover::before, .why-us__card.tap-active::before { transform: scaleX(1); }
+.why-us__card:hover, .why-us__card.tap-active {
     border-color: var(--border-hover);
     transform: translateY(-4px);
     box-shadow: var(--card-shadow);
@@ -1050,7 +1050,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     margin-bottom: 20px;
     transition: all 0.4s var(--ease);
 }
-.why-us__card:hover .why-us__card-icon {
+.why-us__card:hover .why-us__card-icon, .why-us__card.tap-active .why-us__card-icon {
     transform: scale(1.08);
 }
 .why-us__card h3 {
@@ -1515,7 +1515,7 @@ a.contact-card:hover {
     width: 26px;
     border-radius: 5px;
 }
-.review-card:hover {
+.review-card:hover, .review-card.tap-active {
     border-color: rgba(13,95,168,0.6);
     box-shadow: 0 12px 40px rgba(25,40,68,0.14), 0 0 30px rgba(13,72,140,0.4);
     transform: translateY(-3px);
@@ -1689,7 +1689,7 @@ a.contact-card:hover {
 
     .service-row { grid-template-columns: 1fr; gap: 12px; }
     .service-row__number { display: none; }
-    .service-row:hover { padding-left: 0; }
+    .service-row:hover, .service-row.tap-active { padding-left: 0; }
 
     .process__steps { grid-template-columns: 1fr; }
     .applications__grid { grid-template-columns: 1fr; }
