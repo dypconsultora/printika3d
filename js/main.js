@@ -714,9 +714,12 @@
                     scrollTrigger: { trigger: band, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false, scrub: true }
                 }).fromTo(img, { scale: 1.04 }, { scale: 1.14, ease: 'none' });
             } else {
+                // Mismo pin que desktop (transform, no fixed): en iOS el pin por
+                // position:fixed hacía aparecer la imagen adelantada durante el
+                // scroll con inercia, antes de que la sección de arriba se fuera.
                 ScrollTrigger.create({
                     trigger: band, start: 'top top', end: 'bottom top',
-                    pin: true, pinSpacing: false, pinType: 'fixed', anticipatePin: 1
+                    pin: true, pinSpacing: false
                 });
             }
         });
@@ -726,9 +729,7 @@
         if (cta) {
             ScrollTrigger.create({
                 trigger: cta, start: 'top top', end: 'bottom top',
-                pin: true, pinSpacing: false,
-                pinType: bigScreen ? 'transform' : 'fixed',
-                anticipatePin: bigScreen ? 0 : 1
+                pin: true, pinSpacing: false
             });
         }
 
