@@ -596,12 +596,16 @@
     // GSAP here only adds scroll-linked parallax, which merely offsets position.
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (window.gsap && window.ScrollTrigger && !reduceMotion) {
+        const bigScreen = window.matchMedia('(min-width: 900px)').matches;
+
+        const setupGsap = () => {
         gsap.registerPlugin(ScrollTrigger);
 
         // 1) Premium headline reveals with SplitText (lines rise from behind a mask).
-        //    Runs after fonts load so line breaks are correct. Failsafe: if SplitText is
-        //    unavailable, headings simply stay visible (they carry no CSS hidden state).
-        if (window.SplitText) {
+        //    SOLO en pantalla grande: en móvil partir ~8 títulos fuerza re-layouts
+        //    en cadena justo cuando el hero está entrando y lo trababa.
+        //    Failsafe: sin SplitText los títulos simplemente quedan visibles.
+        if (bigScreen && window.SplitText) {
             gsap.registerPlugin(SplitText);
 
             const revealHeading = (title, opts) => {
@@ -647,13 +651,23 @@
             } else {
                 startHeadings();
             }
+        } else {
+            // Móvil: reveal liviano por título (transform + opacity, sin partir texto).
+            gsap.utils.toArray('.section__title').forEach((title) => {
+                const header = title.closest('.section__header') || title.parentElement;
+                const tag = header ? header.querySelector('.section__tag') : null;
+                const tl = gsap.timeline({
+                    scrollTrigger: { trigger: header || title, start: 'top 85%', once: true }
+                });
+                if (tag) tl.from(tag, { y: 16, autoAlpha: 0, duration: 0.3, ease: 'power3.out' }, 0);
+                tl.from(title, { y: 28, autoAlpha: 0, duration: 0.5, ease: 'power3.out' }, tag ? 0.06 : 0);
+            });
         }
 
         ScrollTrigger.config({ ignoreMobileResize: true });
 
         // Los efectos atados al scroll (parallax con scrub y pins a pantalla completa)
         // son costosos en móvil y traban el scroll: se corren SOLO en pantallas grandes.
-        const bigScreen = window.matchMedia('(min-width: 900px)').matches;
         if (bigScreen) {
             // 2) Depth parallax on the decorative noise/grid backgrounds.
             gsap.utils.toArray('.hero__noise, .process__noise').forEach((bg) => {
@@ -714,7 +728,25 @@
         });
 
         // Recalculate once everything (fonts, images, carousel) has settled.
-        window.addEventListener('load', () => ScrollTrigger.refresh());
+        if (document.readyState === 'complete') {
+            ScrollTrigger.refresh();
+        } else {
+            window.addEventListener('load', () => ScrollTrigger.refresh());
+        }
+        }; // setupGsap
+
+        if (bigScreen) {
+            setupGsap();
+        } else {
+            // Móvil: crear los efectos cuando el navegador esté libre, así la
+            // creación de triggers/pins no compite con la entrada del hero
+            // (que corre por CSS apenas se pinta la página).
+            if (window.requestIdleCallback) {
+                requestIdleCallback(setupGsap, { timeout: 1200 });
+            } else {
+                setTimeout(setupGsap, 300);
+            }
+        }
     }
 
 })();

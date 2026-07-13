@@ -526,22 +526,22 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     color: var(--text);
     /* Reveal por CSS (sin depender de GSAP): aparece al instante.
        fill-mode backwards = oculto durante el delay, se libera al terminar. */
-    animation: heroLineIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation: heroLineIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
-.hero__title-line:nth-child(1) { animation-delay: 0.10s; }
-.hero__title-line:nth-child(2) { animation-delay: 0.22s; }
-.hero__title-line:nth-child(3) { animation-delay: 0.34s; }
+.hero__title-line:nth-child(1) { animation-delay: 0.05s; }
+.hero__title-line:nth-child(2) { animation-delay: 0.13s; }
+.hero__title-line:nth-child(3) { animation-delay: 0.21s; }
 @keyframes heroLineIn {
     from { opacity: 0; transform: translateY(40px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 /* Resto del hero también por CSS (instantáneo, sin esperar el JS) */
 .hero__tag, .hero__subtitle, .hero__cta {
-    animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation: heroFadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
-.hero__tag { animation-delay: 0.04s; }
-.hero__subtitle { animation-delay: 0.46s; }
-.hero__cta { animation-delay: 0.58s; }
+.hero__tag { animation-delay: 0.02s; }
+.hero__subtitle { animation-delay: 0.28s; }
+.hero__cta { animation-delay: 0.36s; }
 @keyframes heroFadeUp {
     from { opacity: 0; transform: translateY(26px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -549,12 +549,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 /* Tarjetas: entran de a una, en cascada, con un pequeño "pop".
    backwards (no forwards) para no romper el transform del hover. */
 .hero__card {
-    animation: heroCardIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation: heroCardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
-.hero__card--1 { animation-delay: 0.34s; }
-.hero__card--2 { animation-delay: 0.46s; }
-.hero__card--3 { animation-delay: 0.58s; }
-.hero__card--4 { animation-delay: 0.70s; }
+.hero__card--1 { animation-delay: 0.20s; }
+.hero__card--2 { animation-delay: 0.30s; }
+.hero__card--3 { animation-delay: 0.40s; }
+.hero__card--4 { animation-delay: 0.50s; }
 @keyframes heroCardIn {
     from { opacity: 0; transform: translateY(34px) scale(0.94); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -1760,6 +1760,7 @@ html.can-hover .review-card:hover, .review-card.tap-active {
     /* CTA a pantalla completa para que el pin lo fije y Contacto suba encima */
     .cta-section { min-height: 100vh; }
     .parallax-band__img { will-change: auto; }
+    .hero__title, .section__title, .split-line { will-change: auto; }
 
     .navbar__links { display: none; }
     .navbar__links.active {
