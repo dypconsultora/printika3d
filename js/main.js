@@ -580,6 +580,15 @@
             rvTrack.scrollTo({ left: cardOffset(idx), behavior: 'smooth' });
         }
 
+        // En móvil (1 tarjeta por vista) el track adapta su alto a la opinión visible
+        const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+        function adjustTrackHeight() {
+            if (!isMobile()) { rvTrack.style.height = ''; return; }
+            const idx = Math.min(cards.length - 1, currentPage() * cpv);
+            const h = cards[idx].offsetHeight;
+            if (h) rvTrack.style.height = h + 'px';
+        }
+
         function updateCarousel() {
             const idx = currentPage();
             if (rvDots) {
@@ -587,6 +596,7 @@
             }
             if (rvPrev) rvPrev.disabled = rvTrack.scrollLeft <= 2;
             if (rvNext) rvNext.disabled = rvTrack.scrollLeft >= (rvTrack.scrollWidth - rvTrack.clientWidth - 2);
+            adjustTrackHeight();
         }
 
         function buildDots() {

@@ -84,6 +84,9 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Candado anti-scroll horizontal (clip no crea contenedor de scroll,
+       así ScrollTrigger y sticky siguen funcionando) */
+    overflow-x: clip;
 }
 
 body {
@@ -91,7 +94,7 @@ body {
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
-    overflow-x: hidden;
+    overflow-x: clip;
     transition: background 0.5s var(--ease), color 0.5s var(--ease);
 }
 
@@ -1755,8 +1758,24 @@ html.can-hover .review-card:hover, .review-card.tap-active {
         padding: 24px 16px 30px;
         scroll-padding: 16px;
         gap: 16px;
+        /* cada tarjeta toma su alto natural; el track se ajusta a la visible (JS) */
+        align-items: flex-start;
+        transition: height 0.3s var(--ease);
     }
-    .review-card { flex: 0 0 100%; }
+    .review-card {
+        flex: 0 0 100%;
+        height: auto;
+    }
+    /* en las cortas el autor va justo debajo del texto, sin hueco */
+    .review-card__author { margin-top: 16px; }
+    /* el botón "ver opiniones" no debe pasarse del ancho (causaba scroll horizontal) */
+    .reviews__cta .btn {
+        max-width: 100%;
+        white-space: normal;
+        text-align: center;
+    }
+    /* contener la animación lateral del FAQ para que no genere overflow */
+    .faq__list { overflow-x: clip; }
     .contact__grid { grid-template-columns: 1fr; gap: 40px; }
     .form-row { grid-template-columns: 1fr; }
     .footer__grid { grid-template-columns: 1fr; gap: 28px; }
