@@ -325,18 +325,35 @@
     );
     revealElements.forEach((el) => revealObserver.observe(el));
 
-    // --- Touch: activar efectos de hover al scrollear (spotlight en móvil) ---
-    if (window.matchMedia('(hover: none)').matches && 'IntersectionObserver' in window) {
-        const tapEls = document.querySelectorAll('.hero__card, .service-row, .process__step, .material-card, .application, .why-us__card, .review-card');
-        const tapObserver = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    entry.target.classList.toggle('tap-active', entry.isIntersecting);
-                });
-            },
-            { rootMargin: '-35% 0px -35% 0px', threshold: 0 }
-        );
-        tapEls.forEach((el) => tapObserver.observe(el));
+    // --- Touch: spotlight de a UNO (solo el más centrado en pantalla) ---
+    if (window.matchMedia('(hover: none)').matches) {
+        const tapEls = Array.from(document.querySelectorAll('.hero__card, .service-row, .process__step, .material-card, .application, .why-us__card, .review-card'));
+        if (tapEls.length) {
+            let current = null;
+            let ticking = false;
+            const updateSpotlight = () => {
+                ticking = false;
+                const mid = window.innerHeight / 2;
+                let best = null, bestDist = Infinity;
+                for (const el of tapEls) {
+                    const r = el.getBoundingClientRect();
+                    if (r.bottom <= 0 || r.top >= window.innerHeight) continue; // fuera de pantalla
+                    const dist = Math.abs((r.top + r.height / 2) - mid);
+                    if (dist < bestDist) { bestDist = dist; best = el; }
+                }
+                if (best !== current) {
+                    if (current) current.classList.remove('tap-active');
+                    if (best) best.classList.add('tap-active');
+                    current = best;
+                }
+            };
+            const onScroll = () => {
+                if (!ticking) { ticking = true; requestAnimationFrame(updateSpotlight); }
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll, { passive: true });
+            updateSpotlight();
+        }
     }
 
     // --- Navbar scroll effect ---
