@@ -1459,6 +1459,10 @@ a.contact-card:hover {
     gap: 8px;
     margin-top: 28px;
 }
+.reviews__cta {
+    text-align: center;
+    margin-top: 32px;
+}
 .reviews__dot {
     width: 8px;
     height: 8px;
