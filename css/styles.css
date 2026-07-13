@@ -1558,6 +1558,26 @@ a.contact-card:hover {
     width: 26px;
     border-radius: 5px;
 }
+/* Barra de progreso del carrusel (reemplaza los 23 puntitos) */
+.reviews__progress {
+    position: relative;
+    width: 120px;
+    height: 4px;
+    margin: 28px auto 0;
+    border-radius: 4px;
+    background: var(--border-hover);
+    overflow: hidden;
+}
+.reviews__progress-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 34%;
+    border-radius: 4px;
+    background: var(--accent);
+    transition: left 0.25s var(--ease), width 0.25s var(--ease);
+}
 html.can-hover .review-card:hover, .review-card.tap-active {
     border-color: rgba(13,95,168,0.6);
     box-shadow: 0 12px 40px rgba(25,40,68,0.14), 0 0 30px rgba(13,72,140,0.4);
@@ -1714,8 +1734,12 @@ html.can-hover .review-card:hover, .review-card.tap-active {
     /* Bandas: pantalla completa para que el pin las mantenga fijas
        mientras la sección siguiente sube por encima (mismo efecto que desktop). */
     .parallax-band { height: 100vh; min-height: 460px; }
-    .cta-section { min-height: auto; }
+    /* CTA a pantalla completa para que el pin lo fije y Contacto suba encima */
+    .cta-section { min-height: 100vh; }
     .parallax-band__img { will-change: auto; }
+    /* Hero: las tarjetas las revela GSAP al scrollear (no animación CSS al cargar).
+       Sin GSAP quedan visibles igual (failsafe). */
+    .hero__card { animation: none; }
 
     .navbar__links { display: none; }
     .navbar__links.active {
@@ -1751,14 +1775,15 @@ html.can-hover .review-card:hover, .review-card.tap-active {
     .process__steps { grid-template-columns: 1fr; }
     .applications__grid { grid-template-columns: 1fr; }
     .why-us__grid { grid-template-columns: 1fr; }
-    /* Carrusel de opiniones: en móvil se navega por swipe (+ puntitos).
-       Ocultamos las flechas para que la tarjeta ocupe casi todo el ancho. */
+    /* Carrusel de opiniones: en móvil se navega por swipe (+ barra de progreso).
+       Ocultamos las flechas y usamos el ancho completo (rompemos el padding
+       del container) para que las tarjetas queden más grandes. */
     .reviews__arrow { display: none; }
-    .reviews__carousel { gap: 0; }
+    .reviews__carousel { gap: 0; margin-left: -24px; margin-right: -24px; }
     .reviews__track {
         padding: 24px 16px 30px;
         scroll-padding: 16px;
-        gap: 16px;
+        gap: 14px;
         /* cada tarjeta toma su alto natural; el track se ajusta a la visible (JS) */
         align-items: flex-start;
         transition: height 0.3s var(--ease);

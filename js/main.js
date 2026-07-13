@@ -549,7 +549,8 @@
     if (rvTrack) {
         const rvPrev = document.getElementById('reviewsPrev');
         const rvNext = document.getElementById('reviewsNext');
-        const rvDots = document.getElementById('reviewsDots');
+        const rvProgress = document.getElementById('reviewsProgress');
+        const rvThumb = rvProgress ? rvProgress.querySelector('.reviews__progress-thumb') : null;
         const cards = Array.from(rvTrack.children);
 
         // Cards visible per view — mirrors the CSS breakpoints.
@@ -589,28 +590,27 @@
             if (h) rvTrack.style.height = h + 'px';
         }
 
+        // Barra de progreso: un thumb que se desliza según el avance (en vez de
+        // 23 puntitos). Muestra que hay más contenido sin saturar.
+        function updateProgress() {
+            if (!rvThumb) return;
+            const max = rvTrack.scrollWidth - rvTrack.clientWidth;
+            const ratio = max > 0 ? Math.min(1, Math.max(0, rvTrack.scrollLeft / max)) : 0;
+            // el thumb ocupa ~1/3 del riel y se desliza por el resto
+            const thumbFrac = 0.34;
+            rvThumb.style.width = (thumbFrac * 100) + '%';
+            rvThumb.style.left = (ratio * (1 - thumbFrac) * 100) + '%';
+        }
+
         function updateCarousel() {
-            const idx = currentPage();
-            if (rvDots) {
-                Array.from(rvDots.children).forEach((d, i) => d.classList.toggle('active', i === idx));
-            }
             if (rvPrev) rvPrev.disabled = rvTrack.scrollLeft <= 2;
             if (rvNext) rvNext.disabled = rvTrack.scrollLeft >= (rvTrack.scrollWidth - rvTrack.clientWidth - 2);
+            updateProgress();
             adjustTrackHeight();
         }
 
-        function buildDots() {
-            if (!rvDots) return;
+        function refresh() {
             cpv = computePerView();
-            const n = pageCount();
-            rvDots.innerHTML = '';
-            for (let i = 0; i < n; i++) {
-                const b = document.createElement('button');
-                b.className = 'reviews__dot';
-                b.setAttribute('aria-label', 'Ir a pagina ' + (i + 1));
-                b.addEventListener('click', () => goToPage(i));
-                rvDots.appendChild(b);
-            }
             updateCarousel();
         }
 
@@ -621,11 +621,11 @@
         let rvResizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(rvResizeTimer);
-            rvResizeTimer = setTimeout(buildDots, 200);
+            rvResizeTimer = setTimeout(refresh, 200);
         });
 
-        buildDots();
-        window.addEventListener('load', buildDots);
+        refresh();
+        window.addEventListener('load', refresh);
     }
 
     // --- GSAP ScrollTrigger effects ---
@@ -701,16 +701,12 @@
                 });
             });
 
-            // 3b) Pin the CTA ("EMPEZA TU PROYECTO") and let Contacto slide over it.
-            const cta = document.querySelector('.cta-section');
-            if (cta) {
-                ScrollTrigger.create({ trigger: cta, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
-            }
         }
 
-        // 3) Pin de cada banda de imagen: se congela mientras la sección
-        //    siguiente sube por encima. En pantalla grande suma el zoom con
-        //    scrub; en móvil es solo el pin (más liviano, sin trabar el scroll).
+        // 3) Pin de cada banda de imagen + el CTA "EMPEZA TU PROYECTO":
+        //    se congelan mientras la sección siguiente sube por encima.
+        //    En pantalla grande las bandas suman el zoom con scrub; en móvil
+        //    es solo el pin (más liviano, sin trabar el scroll).
         gsap.utils.toArray('.parallax-band').forEach((band) => {
             const img = band.querySelector('.parallax-band__img');
             if (bigScreen) {
@@ -724,6 +720,31 @@
                 });
             }
         });
+
+        // Pin del CTA en todas las pantallas (Contacto sube por encima).
+        const cta = document.querySelector('.cta-section');
+        if (cta) {
+            ScrollTrigger.create({
+                trigger: cta, start: 'top top', end: 'bottom top',
+                pin: true, pinSpacing: false,
+                pinType: bigScreen ? 'transform' : 'fixed',
+                anticipatePin: bigScreen ? 0 : 1
+            });
+        }
+
+        // Hero (móvil): las tarjetas quedan bajo el pliegue, así que en vez de
+        //    animarlas al cargar (fuera de pantalla), se revelan al scrollear.
+        //    Con gsap.from cada una: la que ya está en pantalla al cargar se
+        //    revela al toque; si GSAP no cargara, el CSS las deja visibles.
+        if (!bigScreen) {
+            gsap.utils.toArray('.hero__card').forEach((card) => {
+                gsap.from(card, {
+                    autoAlpha: 0, y: 40, scale: 0.92,
+                    duration: 0.6, ease: 'power3.out',
+                    scrollTrigger: { trigger: card, start: 'top 92%', toggleActions: 'play none none none' }
+                });
+            });
+        }
 
         // 4) FAQ items enter from alternating sides (1st left, 2nd right, ...),
         //    each one revealing as it scrolls into view (its own trigger).
