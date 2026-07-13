@@ -629,9 +629,8 @@
             };
 
             const startHeadings = () => {
-                const hero = document.querySelector('.hero__title');
-                if (hero) revealHeading(hero, { delay: 0.05 });
-
+                // El título del hero se anima por CSS (no depende de GSAP) para que
+                // aparezca al instante en móvil sin esperar la descarga de los scripts.
                 gsap.utils.toArray('.section__title').forEach((title) => {
                     const header = title.closest('.section__header') || title.parentElement;
                     const tag = header ? header.querySelector('.section__tag') : null;
