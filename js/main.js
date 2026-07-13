@@ -398,35 +398,8 @@
     }
 
     // --- Counter animation ---
-    const counters = document.querySelectorAll('[data-count]');
-    const counterObserver = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    animateCounter(entry.target);
-                    counterObserver.unobserve(entry.target);
-                }
-            });
-        },
-        { threshold: 0.5 }
-    );
-    counters.forEach((el) => counterObserver.observe(el));
-
-    function animateCounter(el) {
-        const target = parseInt(el.dataset.count, 10);
-        const duration = 1800;
-        const start = performance.now();
-
-        function update(now) {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.round(target * eased);
-            if (progress < 1) requestAnimationFrame(update);
-        }
-
-        requestAnimationFrame(update);
-    }
+    // Los contadores del hero se animan con un script inline en index.html
+    // (corre apenas se parsea, sin esperar la descarga de GSAP + main.js).
 
     // --- Smooth anchor scroll ---
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
