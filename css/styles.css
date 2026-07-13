@@ -1747,6 +1747,15 @@ html.can-hover .review-card:hover, .review-card.tap-active {
     .process__steps { grid-template-columns: 1fr; }
     .applications__grid { grid-template-columns: 1fr; }
     .why-us__grid { grid-template-columns: 1fr; }
+    /* Carrusel de opiniones: en móvil se navega por swipe (+ puntitos).
+       Ocultamos las flechas para que la tarjeta ocupe casi todo el ancho. */
+    .reviews__arrow { display: none; }
+    .reviews__carousel { gap: 0; }
+    .reviews__track {
+        padding: 24px 16px 30px;
+        scroll-padding: 16px;
+        gap: 16px;
+    }
     .review-card { flex: 0 0 100%; }
     .contact__grid { grid-template-columns: 1fr; gap: 40px; }
     .form-row { grid-template-columns: 1fr; }
