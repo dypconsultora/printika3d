@@ -1149,9 +1149,17 @@ html.can-hover .why-us__card:hover .why-us__card-icon, .why-us__card.tap-active 
 .contact__grid {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
-    gap: 64px;
+    grid-template-rows: auto 1fr;
+    column-gap: 64px;
+    row-gap: 0;
     align-items: stretch;
 }
+/* Encabezado arriba-izquierda; tarjetas y formulario en la fila de abajo:
+   así el tope del form se nivela con el recuadro de EMAIL y su base con Instagram. */
+.contact__intro { grid-column: 1; grid-row: 1; }
+.contact__info  { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; }
+.contact__form  { grid-column: 2; grid-row: 2; }
+.contact__social-card { margin-top: auto; }
 .contact__desc {
     font-size: 1rem;
     color: var(--text-secondary);
@@ -1817,7 +1825,9 @@ html.can-hover .review-card:hover, .review-card.tap-active {
     }
     /* contener la animación lateral del FAQ para que no genere overflow */
     .faq__list { overflow-x: clip; }
-    .contact__grid { grid-template-columns: 1fr; gap: 40px; }
+    .contact__grid { grid-template-columns: 1fr; grid-template-rows: none; gap: 40px; }
+    /* En móvil se apilan en orden natural: encabezado, tarjetas, formulario */
+    .contact__intro, .contact__info, .contact__form { grid-column: auto; grid-row: auto; }
     .form-row { grid-template-columns: 1fr; }
     .footer__grid { grid-template-columns: 1fr; gap: 28px; }
 }
