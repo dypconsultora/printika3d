@@ -208,11 +208,11 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     left: 0;
     right: 0;
     z-index: 100;
-    padding: 16px 0;
+    padding: 12px 0;
     transition: all 0.4s var(--ease);
 }
 .navbar.scrolled {
-    padding: 10px 0;
+    padding: 8px 0;
 }
 .navbar__inner {
     display: flex;
@@ -223,7 +223,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid var(--border);
     border-radius: 60px;
-    padding: 10px 12px 10px 28px;
+    padding: 6px 12px 6px 28px;
     transition: all 0.4s var(--ease);
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
@@ -242,13 +242,13 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     align-items: center;
 }
 .navbar__logo-img {
-    height: 80px;
+    height: 58px;
     width: auto;
     display: block;
     transition: height 0.4s var(--ease);
 }
 .navbar.scrolled .navbar__logo-img {
-    height: 68px;
+    height: 50px;
 }
 /* Logo: version clara (iso/frase oscuros) por defecto; version dark (iso/frase en blanco) sobre fondos oscuros */
 .navbar__logo-img--dark { display: none; }
@@ -1699,10 +1699,12 @@ a.contact-card:hover {
     /* Perf móvil: sin blur pesado (traba el scroll); fondo más opaco en su lugar */
     .navbar__inner {
         border-radius: 20px;
-        padding: 10px 16px;
+        padding: 5px 16px;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
     }
+    .navbar__logo-img { height: 50px; }
+    .navbar.scrolled .navbar__logo-img { height: 44px; }
     [data-theme="dark"] .navbar__inner,
     [data-theme="dark"] .navbar.over-dark .navbar__inner { background: rgba(10, 18, 32, 0.94); }
     [data-theme="light"] .navbar__inner { background: rgba(245, 249, 252, 0.94); }
