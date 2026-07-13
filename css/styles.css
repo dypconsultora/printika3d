@@ -124,6 +124,19 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 }
 
 /* --- REVEAL --- */
+/* Barra de progreso de scroll (arriba de todo) */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(90deg, #2db7fa, #0d8fd6);
+    box-shadow: 0 0 8px rgba(45, 183, 250, 0.5);
+    z-index: 200;
+    will-change: width;
+}
+
 .reveal {
     opacity: 0;
     transform: translateY(36px);
@@ -1385,15 +1398,39 @@ a.contact-card:hover {
     flex-wrap: wrap;
     margin-bottom: 48px;
 }
-.reviews__stars {
-    color: var(--accent);
-    font-size: 1.4rem;
-    letter-spacing: 3px;
+/* Badge de opiniones de Google */
+.google-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 24px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(25, 40, 68, 0.06);
+    box-shadow: 0 6px 24px rgba(25, 40, 68, 0.10);
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
-.reviews__rating-text {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    font-weight: 500;
+.google-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(25, 40, 68, 0.16);
+}
+.google-badge__g { flex-shrink: 0; }
+.google-badge__body { display: flex; flex-direction: column; gap: 3px; }
+.google-badge__top { display: flex; align-items: center; gap: 8px; }
+.google-badge__rating {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #14213a;
+}
+.google-badge__stars {
+    color: #fbbc04;
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+}
+.google-badge__label {
+    font-size: 0.9rem;
+    color: #5f6b7a;
 }
 .reviews__carousel {
     position: relative;

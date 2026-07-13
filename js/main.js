@@ -331,6 +331,19 @@
         navbar.classList.toggle('scrolled', window.scrollY > 50);
     }, { passive: true });
 
+    // --- Barra de progreso de scroll ---
+    const progressBar = document.getElementById('scrollProgress');
+    if (progressBar) {
+        const updateProgress = () => {
+            const el = document.documentElement;
+            const max = el.scrollHeight - el.clientHeight;
+            progressBar.style.width = (max > 0 ? (el.scrollTop / max) * 100 : 0) + '%';
+        };
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        window.addEventListener('resize', updateProgress, { passive: true });
+        updateProgress();
+    }
+
     // --- Mobile toggle ---
     const navToggle = document.getElementById('navToggle');
     const navLinks = document.getElementById('navLinks');
