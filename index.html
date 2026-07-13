@@ -40,8 +40,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css?v=35">
+    <!-- Fuentes sin bloquear el render -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"></noscript>
+    <link rel="stylesheet" href="css/styles.css?v=36">
 
     <!-- Datos estructurados: Negocio local + Servicios -->
     <script type="application/ld+json">
@@ -103,8 +106,8 @@
     <nav class="navbar" id="navbar">
         <div class="container navbar__inner">
             <a href="#" class="navbar__logo">
-                <img src="assets/Innovacion-en-3D.svg" alt="Printika 3D" class="navbar__logo-img navbar__logo-img--light">
-                <img src="assets/Innovacion-en-3D-dark.svg" alt="Printika 3D" class="navbar__logo-img navbar__logo-img--dark">
+                <img src="assets/Innovacion-en-3D.svg" alt="Printika 3D" width="180" height="80" class="navbar__logo-img navbar__logo-img--light">
+                <img src="assets/Innovacion-en-3D-dark.svg" alt="Printika 3D" width="180" height="80" class="navbar__logo-img navbar__logo-img--dark">
             </a>
             <ul class="navbar__links" id="navLinks">
                 <li><a href="#inicio" data-i18n="nav-inicio">INICIO</a></li>
@@ -252,7 +255,7 @@
 
     <!-- PARALLAX BAND 1 -->
     <section class="parallax-band">
-        <div class="parallax-band__img" style="background-image:url('assets/printer-3d.jpg')"></div>
+        <div class="parallax-band__img parallax-band__img--printer"></div>
         <div class="parallax-band__overlay"></div>
         <div class="container parallax-band__content">
             <span class="parallax-band__tag">TECNOLOGIA FDM &amp; RESINA SLA</span>
@@ -349,7 +352,7 @@
 
     <!-- PARALLAX BAND 2 -->
     <section class="parallax-band">
-        <div class="parallax-band__img" style="background-image:url('assets/piezas-3d.jpg')"></div>
+        <div class="parallax-band__img parallax-band__img--piezas"></div>
         <div class="parallax-band__overlay"></div>
         <div class="container parallax-band__content">
             <span class="parallax-band__tag">PIEZAS REALES</span>

@@ -1336,6 +1336,17 @@ a.contact-card:hover {
     background-position: center;
     will-change: transform;
 }
+/* WebP con fallback a JPG (image-set): navegador elige el más liviano que soporta */
+.parallax-band__img--printer {
+    background-image: url('../assets/printer-3d.jpg');
+    background-image: -webkit-image-set(url('../assets/printer-3d.webp') type('image/webp'), url('../assets/printer-3d.jpg') type('image/jpeg'));
+    background-image: image-set(url('../assets/printer-3d.webp') type('image/webp'), url('../assets/printer-3d.jpg') type('image/jpeg'));
+}
+.parallax-band__img--piezas {
+    background-image: url('../assets/piezas-3d.jpg');
+    background-image: -webkit-image-set(url('../assets/piezas-3d.webp') type('image/webp'), url('../assets/piezas-3d.jpg') type('image/jpeg'));
+    background-image: image-set(url('../assets/piezas-3d.webp') type('image/webp'), url('../assets/piezas-3d.jpg') type('image/jpeg'));
+}
 .parallax-band__overlay {
     position: absolute;
     inset: 0;
