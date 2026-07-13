@@ -325,6 +325,12 @@
     );
     revealElements.forEach((el) => revealObserver.observe(el));
 
+    // --- Solo en dispositivos con mouse real habilitamos los efectos :hover
+    //     (en touch el :hover se "pega" en iOS y quedaban dos activos a la vez) ---
+    if (window.matchMedia('(hover: hover)').matches) {
+        document.documentElement.classList.add('can-hover');
+    }
+
     // --- Touch: spotlight de a UNO (solo el más centrado en pantalla) ---
     if (window.matchMedia('(hover: none)').matches) {
         const tapEls = Array.from(document.querySelectorAll('.hero__card, .service-row, .process__step, .material-card, .application, .why-us__card, .review-card'));
