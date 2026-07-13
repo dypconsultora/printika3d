@@ -616,21 +616,21 @@
                 } catch (e) { return; }
                 const tl = gsap.timeline(opts.scrollTrigger ? { scrollTrigger: opts.scrollTrigger } : { delay: opts.delay || 0 });
                 if (opts.tag) {
-                    tl.from(opts.tag, { y: 24, autoAlpha: 0, duration: 0.6, ease: 'power3.out' }, 0);
+                    tl.from(opts.tag, { y: 18, autoAlpha: 0, duration: 0.35, ease: 'power3.out' }, 0);
                 }
                 tl.from(split.lines, {
                     yPercent: 115,
                     autoAlpha: 0,
-                    duration: 1,
-                    ease: 'expo.out',
-                    stagger: 0.12
-                }, opts.tag ? 0.1 : 0);
+                    duration: 0.55,
+                    ease: 'power3.out',
+                    stagger: 0.07
+                }, opts.tag ? 0.08 : 0);
                 return tl;
             };
 
             const startHeadings = () => {
                 const hero = document.querySelector('.hero__title');
-                if (hero) revealHeading(hero, { delay: 0.15 });
+                if (hero) revealHeading(hero, { delay: 0.05 });
 
                 gsap.utils.toArray('.section__title').forEach((title) => {
                     const header = title.closest('.section__header') || title.parentElement;
@@ -643,8 +643,12 @@
                 ScrollTrigger.refresh();
             };
 
+            // Arrancar cuando las fuentes estén listas, pero sin esperar más de 350ms.
+            let started = false;
+            const startOnce = () => { if (!started) { started = true; startHeadings(); } };
             if (document.fonts && document.fonts.ready) {
-                document.fonts.ready.then(startHeadings);
+                document.fonts.ready.then(startOnce);
+                setTimeout(startOnce, 350);
             } else {
                 startHeadings();
             }
