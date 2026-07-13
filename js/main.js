@@ -581,15 +581,6 @@
             rvTrack.scrollTo({ left: cardOffset(idx), behavior: 'smooth' });
         }
 
-        // En móvil (1 tarjeta por vista) el track adapta su alto a la opinión visible
-        const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
-        function adjustTrackHeight() {
-            if (!isMobile()) { rvTrack.style.height = ''; return; }
-            const idx = Math.min(cards.length - 1, currentPage() * cpv);
-            const h = cards[idx].offsetHeight;
-            if (h) rvTrack.style.height = h + 'px';
-        }
-
         // Barra de progreso: un thumb que se desliza según el avance (en vez de
         // 23 puntitos). Muestra que hay más contenido sin saturar.
         function updateProgress() {
@@ -606,7 +597,6 @@
             if (rvPrev) rvPrev.disabled = rvTrack.scrollLeft <= 2;
             if (rvNext) rvNext.disabled = rvTrack.scrollLeft >= (rvTrack.scrollWidth - rvTrack.clientWidth - 2);
             updateProgress();
-            adjustTrackHeight();
         }
 
         function refresh() {
@@ -733,19 +723,6 @@
             });
         }
 
-        // Hero (móvil): las tarjetas quedan bajo el pliegue, así que en vez de
-        //    animarlas al cargar (fuera de pantalla), se revelan al scrollear.
-        //    Con gsap.from cada una: la que ya está en pantalla al cargar se
-        //    revela al toque; si GSAP no cargara, el CSS las deja visibles.
-        if (!bigScreen) {
-            gsap.utils.toArray('.hero__card').forEach((card) => {
-                gsap.from(card, {
-                    autoAlpha: 0, y: 40, scale: 0.92,
-                    duration: 0.6, ease: 'power3.out',
-                    scrollTrigger: { trigger: card, start: 'top 92%', toggleActions: 'play none none none' }
-                });
-            });
-        }
 
         // 4) FAQ items enter from alternating sides (1st left, 2nd right, ...),
         //    each one revealing as it scrolls into view (its own trigger).

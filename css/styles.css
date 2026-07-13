@@ -1760,9 +1760,6 @@ html.can-hover .review-card:hover, .review-card.tap-active {
     /* CTA a pantalla completa para que el pin lo fije y Contacto suba encima */
     .cta-section { min-height: 100vh; }
     .parallax-band__img { will-change: auto; }
-    /* Hero: las tarjetas las revela GSAP al scrollear (no animación CSS al cargar).
-       Sin GSAP quedan visibles igual (failsafe). */
-    .hero__card { animation: none; }
 
     .navbar__links { display: none; }
     .navbar__links.active {
@@ -1807,16 +1804,11 @@ html.can-hover .review-card:hover, .review-card.tap-active {
         padding: 24px 16px 30px;
         scroll-padding: 16px;
         gap: 14px;
-        /* cada tarjeta toma su alto natural; el track se ajusta a la visible (JS) */
-        align-items: flex-start;
-        transition: height 0.3s var(--ease);
+        /* todas las tarjetas al mismo alto (un solo alto fijo, sin regular
+           por JS que se rompía al scrollear). El autor queda abajo. */
+        align-items: stretch;
     }
-    .review-card {
-        flex: 0 0 100%;
-        height: auto;
-    }
-    /* en las cortas el autor va justo debajo del texto, sin hueco */
-    .review-card__author { margin-top: 16px; }
+    .review-card { flex: 0 0 100%; }
     /* el botón "ver opiniones" no debe pasarse del ancho (causaba scroll horizontal) */
     .reviews__cta .btn {
         max-width: 100%;
