@@ -1711,8 +1711,9 @@ html.can-hover .review-card:hover, .review-card.tap-active {
     [data-theme="dark"] .navbar__inner,
     [data-theme="dark"] .navbar.over-dark .navbar__inner { background: rgba(10, 18, 32, 0.94); }
     [data-theme="light"] .navbar__inner { background: rgba(245, 249, 252, 0.94); }
-    /* Bandas y CTA no pinneados en móvil: altura razonable (no pantalla completa) */
-    .parallax-band { height: auto; min-height: 60vh; }
+    /* Bandas: pantalla completa para que el pin las mantenga fijas
+       mientras la sección siguiente sube por encima (mismo efecto que desktop). */
+    .parallax-band { height: 100vh; min-height: 460px; }
     .cta-section { min-height: auto; }
     .parallax-band__img { will-change: auto; }
 

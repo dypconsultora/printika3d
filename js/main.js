@@ -701,20 +701,29 @@
                 });
             });
 
-            // 3) Pin each full-height image band: freezes while the next section slides over it.
-            gsap.utils.toArray('.parallax-band').forEach((band) => {
-                const img = band.querySelector('.parallax-band__img');
-                gsap.timeline({
-                    scrollTrigger: { trigger: band, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false, scrub: true }
-                }).fromTo(img, { scale: 1.04 }, { scale: 1.14, ease: 'none' });
-            });
-
             // 3b) Pin the CTA ("EMPEZA TU PROYECTO") and let Contacto slide over it.
             const cta = document.querySelector('.cta-section');
             if (cta) {
                 ScrollTrigger.create({ trigger: cta, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
             }
         }
+
+        // 3) Pin de cada banda de imagen: se congela mientras la sección
+        //    siguiente sube por encima. En pantalla grande suma el zoom con
+        //    scrub; en móvil es solo el pin (más liviano, sin trabar el scroll).
+        gsap.utils.toArray('.parallax-band').forEach((band) => {
+            const img = band.querySelector('.parallax-band__img');
+            if (bigScreen) {
+                gsap.timeline({
+                    scrollTrigger: { trigger: band, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false, scrub: true }
+                }).fromTo(img, { scale: 1.04 }, { scale: 1.14, ease: 'none' });
+            } else {
+                ScrollTrigger.create({
+                    trigger: band, start: 'top top', end: 'bottom top',
+                    pin: true, pinSpacing: false, pinType: 'fixed', anticipatePin: 1
+                });
+            }
+        });
 
         // 4) FAQ items enter from alternating sides (1st left, 2nd right, ...),
         //    each one revealing as it scrolls into view (its own trigger).
