@@ -1,7 +1,8 @@
 <?php
-// === Calculadora 3D · acceso protegido ===
+// === Calculadora 3D · versión FREE (abre directo, sin login).
+//     Las funciones PRO se habilitan por suscripción (contacto por WhatsApp). ===
 require_once __DIR__ . '/auth.php';
-requerir_login();
+iniciar_sesion();
 $csrf = token_csrf();
 ?>
 <!DOCTYPE html>
@@ -93,26 +94,6 @@ body {
   font-size: 0.8rem;
   color: var(--text-secondary);
   font-weight: 400;
-}
-
-.logout-link {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-decoration: none;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  padding: 0.35rem 0.7rem;
-  border-radius: var(--radius-sm);
-  transition: border-color var(--transition), color var(--transition);
-}
-
-.logout-link:hover {
-  color: var(--accent);
-  border-color: var(--accent);
 }
 
 .project-name-bar {
@@ -882,6 +863,88 @@ input[type="range"]::-moz-range-thumb {
 .card:nth-child(8) { animation-delay: 0.24s; }
 .card:nth-child(9) { animation-delay: 0.27s; }
 .card:nth-child(10) { animation-delay: 0.30s; }
+
+/* === Version FREE: secciones PRO bloqueadas === */
+.pro-locked { cursor: pointer; }
+.pro-locked input, .pro-locked select, .pro-locked .toggle,
+.pro-locked button.pro-btn { pointer-events: none; }
+.pro-locked .field-grid, .pro-locked .toggle-row { opacity: 0.55; }
+
+.pro-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(5, 5, 12, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+}
+.pro-modal.open { display: flex; }
+.pro-modal__card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2rem 1.75rem;
+  text-align: center;
+  box-shadow: 0 0 60px var(--accent-glow);
+  animation: fadeUp 0.3s ease both;
+}
+.pro-modal__badge {
+  display: inline-block;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 0.9rem;
+}
+.pro-modal__card h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+}
+.pro-modal__card p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 1.4rem;
+}
+.pro-modal__wa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: #25D366;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 13px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: filter 0.2s, transform 0.2s;
+}
+.pro-modal__wa:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.pro-modal__close {
+  display: block;
+  width: 100%;
+  margin-top: 0.7rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 8px;
+  cursor: pointer;
+}
+.pro-modal__close:hover { color: var(--text-secondary); }
 </style>
 <script>
   window.APP = { api: 'api.php', csrf: <?php echo json_encode($csrf); ?> };
@@ -890,7 +953,6 @@ input[type="range"]::-moz-range-thumb {
 <body>
 
 <header class="header">
-  <a href="logout.php" class="logout-link" title="Cerrar sesion">&#x21AA; Salir</a>
   <h1>Calculadora de Costos 3D</h1>
   <p>Calcula el precio justo para tus impresiones 3D</p>
   <div class="project-name-bar">
@@ -1325,8 +1387,8 @@ input[type="range"]::-moz-range-thumb {
     </div>
   </section>
 
-  <!-- Saved Quotes -->
-  <section class="card quotes-card" id="sec-quotes">
+  <!-- Saved Quotes (funcion PRO: oculta en la version FREE) -->
+  <section class="card quotes-card" id="sec-quotes" style="display:none;">
     <div class="card-title">
       <span class="icon">&#128209;</span>
       Cotizaciones Guardadas
@@ -1337,6 +1399,20 @@ input[type="range"]::-moz-range-thumb {
   </section>
 
 </main>
+
+<!-- Cartel de suscripcion PRO -->
+<div class="pro-modal" id="proModal" role="dialog" aria-modal="true" aria-labelledby="proModalTitle">
+  <div class="pro-modal__card">
+    <span class="pro-modal__badge">PRO</span>
+    <h2 id="proModalTitle">Funci&oacute;n exclusiva de la versi&oacute;n PRO</h2>
+    <p>Para habilitar la versi&oacute;n PRO contactanos para habilitar la suscripci&oacute;n.</p>
+    <a class="pro-modal__wa" href="https://wa.me/5491131373425?text=Hola!%20Quiero%20habilitar%20la%20versi%C3%B3n%20PRO%20de%20la%20calculadora%203D" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.37 0-4.567-.68-6.434-1.852l-.448-.29-2.648.888.888-2.648-.29-.448A9.96 9.96 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+      Contactar por WhatsApp
+    </a>
+    <button class="pro-modal__close" onclick="closeProModal()">Cerrar</button>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -1364,7 +1440,7 @@ input[type="range"]::-moz-range-thumb {
     }
     const base = (window.APP && window.APP.api) || 'api.php';
     const res = await fetch(base + '?action=' + action, opts);
-    if (res.status === 401) { window.location = 'login.php'; throw new Error('Sesion expirada'); }
+    if (res.status === 401) { throw new Error('Funcion no habilitada'); }
     return res.json();
   }
 
@@ -1833,8 +1909,32 @@ PRECIO FINAL: ${price}${meliInfo}
     showToast('Valores reiniciados');
   };
 
-  // Init
-  renderQuotes();
+  // === Version FREE: funciones PRO bloqueadas con cartel de suscripcion ===
+  const proModal = $('proModal');
+  window.showProModal = function (e) {
+    if (e && e.preventDefault) { e.preventDefault(); e.stopPropagation(); }
+    proModal.classList.add('open');
+  };
+  window.closeProModal = function () { proModal.classList.remove('open'); };
+  proModal.addEventListener('click', (ev) => { if (ev.target === proModal) closeProModal(); });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeProModal(); });
+
+  // Secciones PRO: los controles no reciben eventos (pointer-events none),
+  // el click cae en la seccion y abre el cartel. Tab/teclado tambien bloqueado.
+  ['sec-additional', 'sec-meli'].forEach((id) => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    sec.classList.add('pro-locked');
+    sec.addEventListener('click', showProModal);
+    sec.addEventListener('focusin', (ev) => { ev.target.blur(); showProModal(); });
+  });
+
+  // Acciones PRO: guardar, exportar y compartir muestran el cartel.
+  window.saveQuote = showProModal;
+  window.exportPDF = showProModal;
+  window.shareQuote = showProModal;
+
+  // Init (sin renderQuotes: guardado de cotizaciones es PRO)
   calculate();
 })();
 </script>
