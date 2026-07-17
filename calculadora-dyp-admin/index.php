@@ -98,17 +98,23 @@ $csrf = token_csrf();
   .header h1 { margin-top: 4rem; }
 }
 
-/* Selector dia/noche (las dos opciones a la vista) */
+/* Selector dia/noche (las dos opciones a la vista).
+   Centrado verticalmente con el logo y un poco alejado del borde. */
 .theme-switch {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 3.5rem;
   display: inline-flex;
   gap: 2px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 30px;
   padding: 3px;
+}
+@media (max-width: 700px) {
+  /* en movil el logo esta arriba (no centrado): alinear el selector con el */
+  .theme-switch { top: 1.6rem; transform: none; right: 1.25rem; }
 }
 .theme-opt {
   display: inline-flex;
