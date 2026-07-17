@@ -176,8 +176,8 @@ body {
   flex-shrink: 0;
 }
 
-.card-title .badge {
-  margin-left: auto;
+.card-title .badge,
+.toggle-row .badge {
   font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -187,6 +187,7 @@ body {
   padding: 0.15rem 0.5rem;
   border-radius: 4px;
 }
+.card-title .badge { margin-left: auto; }
 
 /* Form elements */
 .field-grid {
@@ -868,7 +869,10 @@ input[type="range"]::-moz-range-thumb {
 .pro-locked { cursor: pointer; }
 .pro-locked input, .pro-locked select, .pro-locked .toggle,
 .pro-locked button.pro-btn { pointer-events: none; }
-.pro-locked .field-grid, .pro-locked .toggle-row { opacity: 0.55; }
+.pro-locked .field-grid, .pro-locked .toggle-row,
+.toggle-row.pro-locked { opacity: 0.55; }
+/* badge PRO dentro de una fila de toggle */
+.toggle-row .badge { margin-left: 6px; vertical-align: middle; }
 
 .pro-modal {
   position: fixed;
@@ -1018,8 +1022,8 @@ input[type="range"]::-moz-range-thumb {
         <div class="computed" id="totalMaterialCost">$0.00</div>
       </div>
     </div>
-    <div class="toggle-row">
-      <span>Incluir material de soporte</span>
+    <div class="toggle-row" id="supportProRow">
+      <span>Incluir material de soporte <span class="badge">PRO</span></span>
       <label class="toggle">
         <input type="checkbox" id="supportToggle">
         <span class="toggle-slider"></span>
@@ -1101,6 +1105,7 @@ input[type="range"]::-moz-range-thumb {
     <div class="card-title">
       <span class="icon">&#128736;</span>
       Costos de Mano de Obra
+      <span class="badge">PRO</span>
     </div>
     <div class="field-grid">
       <div class="field">
@@ -1127,6 +1132,7 @@ input[type="range"]::-moz-range-thumb {
     <div class="card-title">
       <span class="icon">&#128424;</span>
       Depreciacion de la Maquina
+      <span class="badge">PRO</span>
     </div>
     <div class="field-grid">
       <div class="field">
@@ -1921,7 +1927,7 @@ PRECIO FINAL: ${price}${meliInfo}
 
   // Secciones PRO: los controles no reciben eventos (pointer-events none),
   // el click cae en la seccion y abre el cartel. Tab/teclado tambien bloqueado.
-  ['sec-additional', 'sec-meli'].forEach((id) => {
+  ['sec-additional', 'sec-meli', 'sec-labor', 'sec-depreciation', 'supportProRow'].forEach((id) => {
     const sec = document.getElementById(id);
     if (!sec) return;
     sec.classList.add('pro-locked');
