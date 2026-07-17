@@ -1110,15 +1110,15 @@ input[type="range"]::-moz-range-thumb {
     <div class="field-grid">
       <div class="field">
         <label for="prepTime">Preparacion <span class="unit">(min)</span></label>
-        <input type="number" id="prepTime" value="15" min="0" step="1">
+        <input type="number" id="prepTime" value="0" min="0" step="1">
       </div>
       <div class="field">
         <label for="postTime">Post-proceso <span class="unit">(min)</span></label>
-        <input type="number" id="postTime" value="10" min="0" step="1">
+        <input type="number" id="postTime" value="0" min="0" step="1">
       </div>
       <div class="field">
         <label for="laborRate">Tarifa por hora <span class="unit" id="laborRateUnit">($)</span></label>
-        <input type="number" id="laborRate" value="3000" min="0" step="100">
+        <input type="number" id="laborRate" value="0" min="0" step="100">
       </div>
       <div class="field">
         <label>Costo mano de obra</label>
@@ -1137,7 +1137,7 @@ input[type="range"]::-moz-range-thumb {
     <div class="field-grid">
       <div class="field">
         <label for="printerCost">Costo impresora <span class="unit" id="printerCostUnit">($)</span></label>
-        <input type="number" id="printerCost" value="500000" min="0" step="1000">
+        <input type="number" id="printerCost" value="0" min="0" step="1000">
       </div>
       <div class="field">
         <label for="printerLifespan">Vida util <span class="unit">(horas)</span></label>
@@ -1145,7 +1145,7 @@ input[type="range"]::-moz-range-thumb {
       </div>
       <div class="field">
         <label for="maintenanceCost">Mantenimiento anual <span class="unit" id="maintenanceCostUnit">($)</span></label>
-        <input type="number" id="maintenanceCost" value="30000" min="0" step="1000">
+        <input type="number" id="maintenanceCost" value="0" min="0" step="1000">
       </div>
       <div class="field">
         <label>Depreciacion por hora</label>
@@ -1176,7 +1176,7 @@ input[type="range"]::-moz-range-thumb {
       </div>
       <div class="field">
         <label for="failureRate">Tasa de fallos <span class="unit">(%)</span></label>
-        <input type="number" id="failureRate" value="5" min="0" max="100" step="1">
+        <input type="number" id="failureRate" value="0" min="0" max="100" step="1">
       </div>
       <div class="field">
         <label for="otherCosts">Otros costos fijos <span class="unit" id="otherCostsUnit">($)</span></label>
@@ -1879,15 +1879,16 @@ PRECIO FINAL: ${price}${meliInfo}
       printMinutes: '30',
       printerWatts: '200',
       electricRate: '239.17',
-      prepTime: '15',
-      postTime: '10',
-      laborRate: '3000',
-      printerCost: '500000',
+      // Campos PRO: en la version FREE arrancan en 0 (no suman al precio)
+      prepTime: '0',
+      postTime: '0',
+      laborRate: '0',
+      printerCost: '0',
       printerLifespan: '2000',
-      maintenanceCost: '30000',
+      maintenanceCost: '0',
       packagingCost: '0',
       shippingCost: '0',
-      failureRate: '5',
+      failureRate: '0',
       otherCosts: '0',
       marginSlider: '30',
       fixedPrice: '0',
