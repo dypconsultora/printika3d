@@ -44,6 +44,61 @@ $csrf = token_csrf();
   --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* === Tema claro (dia) === */
+[data-theme="light"] {
+  --bg-primary: #f4f7fb;
+  --bg-secondary: #e9eef5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f6f9fd;
+  --bg-input: #eff3f9;
+  --border-color: #d6dee9;
+  --border-focus: #0090c9;
+  --accent: #0090c9;
+  --accent-dim: rgba(0, 144, 201, 0.12);
+  --accent-glow: rgba(0, 144, 201, 0.18);
+  --text-primary: #16202e;
+  --text-secondary: #51617a;
+  --text-muted: #8494ab;
+  --shadow: 0 4px 24px rgba(22, 32, 46, 0.08);
+}
+/* En claro el gradiente del titulo arranca oscuro (en dark arranca blanco) */
+[data-theme="light"] .header h1 {
+  background: linear-gradient(135deg, #16202e 30%, var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Selector dia/noche (las dos opciones a la vista) */
+.theme-switch {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  gap: 2px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  padding: 3px;
+}
+.theme-opt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 28px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.theme-opt:hover { color: var(--text-secondary); }
+.theme-opt.active {
+  background: var(--accent);
+  color: var(--bg-card);
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
@@ -58,6 +113,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
 /* Scrollbar */
@@ -952,11 +1008,27 @@ input[type="range"]::-moz-range-thumb {
 </style>
 <script>
   window.APP = { api: 'api.php', csrf: <?php echo json_encode($csrf); ?> };
+  // Aplicar el tema guardado antes del primer pintado (evita destello)
+  (function () {
+    try {
+      if (localStorage.getItem('calc3d-theme') === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    } catch (e) {}
+  })();
 </script>
 </head>
 <body>
 
 <header class="header">
+  <div class="theme-switch" role="group" aria-label="Elegir tema">
+    <button type="button" class="theme-opt" data-theme-opt="light" aria-label="Modo dia" title="Modo dia">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <button type="button" class="theme-opt active" data-theme-opt="dark" aria-label="Modo noche" title="Modo noche">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+  </div>
   <h1>Calculadora de Costos 3D</h1>
   <p>Calcula el precio justo para tus impresiones 3D</p>
   <div class="project-name-bar">
@@ -1940,6 +2012,19 @@ PRECIO FINAL: ${price}${meliInfo}
   window.saveQuote = showProModal;
   window.exportPDF = showProModal;
   window.shareQuote = showProModal;
+
+  // === Selector dia/noche ===
+  const themeBtns = document.querySelectorAll('.theme-opt');
+  function applyTheme(t) {
+    if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    themeBtns.forEach((b) => b.classList.toggle('active', b.dataset.themeOpt === t));
+    try { localStorage.setItem('calc3d-theme', t); } catch (e) {}
+  }
+  themeBtns.forEach((b) => b.addEventListener('click', () => applyTheme(b.dataset.themeOpt)));
+  // marcar el boton activo segun el tema ya aplicado en el <head>
+  themeBtns.forEach((b) => b.classList.toggle('active',
+    b.dataset.themeOpt === (document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark')));
 
   // Init (sin renderQuotes: guardado de cotizaciones es PRO)
   calculate();
