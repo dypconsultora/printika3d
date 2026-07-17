@@ -41,7 +41,7 @@ function obtener_hash_password() {
         $stmt->execute(['password_hash']);
         $row = $stmt->fetch();
         return $row ? $row['valor'] : null;
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         return null;
     }
 }
@@ -59,7 +59,7 @@ function obtener_usuario_pro() {
         $stmt->execute(['usuario_pro']);
         $row = $stmt->fetch();
         return $row ? $row['valor'] : 'printika';
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         return 'printika';
     }
 }
