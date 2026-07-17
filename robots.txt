@@ -2,6 +2,6 @@
 # Buscadores y asistentes de IA: bienvenidos (para poder citar el sitio)
 User-agent: *
 Allow: /
-Disallow: /calculadora-dyp-admin/
+Disallow: /cotizador/
 
 Sitemap: https://printika3d.com/sitemap.xml
