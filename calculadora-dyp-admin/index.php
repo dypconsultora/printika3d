@@ -73,7 +73,7 @@ $csrf = token_csrf();
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 1.5rem;
+  left: 3.5rem; /* mismo margen hacia adentro que el selector dia/noche */
   display: inline-block;
   line-height: 0;
 }
@@ -92,7 +92,7 @@ $csrf = token_csrf();
   .header-logo img { height: 82px; }
 }
 @media (max-width: 700px) {
-  .header-logo { top: 0.9rem; left: 1rem; transform: none; }
+  .header-logo { top: 0.9rem; left: 1.25rem; transform: none; }
   .header-logo img { height: 56px; }
   /* bajar el titulo para que no choque con logo y selector */
   .header h1 { margin-top: 4rem; }
