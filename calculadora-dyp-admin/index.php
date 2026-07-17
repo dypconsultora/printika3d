@@ -71,13 +71,14 @@ $csrf = token_csrf();
 /* Logo Printika a la izquierda del header */
 .header-logo {
   position: absolute;
-  top: 0.9rem;
-  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1.5rem;
   display: inline-block;
   line-height: 0;
 }
 .header-logo img {
-  height: 52px;
+  height: 156px;
   width: auto;
   display: block;
 }
@@ -86,11 +87,15 @@ $csrf = token_csrf();
 [data-theme="light"] .header-logo .logo-light { display: block; }
 [data-theme="light"] .header-logo .logo-dark { display: none; }
 
+/* pantallas medianas: un poco mas chico para no pisar el titulo */
+@media (max-width: 1100px) {
+  .header-logo img { height: 96px; }
+}
 @media (max-width: 700px) {
-  .header-logo img { height: 34px; }
-  .header-logo { top: 1rem; left: 1rem; }
+  .header-logo { top: 0.9rem; left: 1rem; transform: none; }
+  .header-logo img { height: 64px; }
   /* bajar el titulo para que no choque con logo y selector */
-  .header h1 { margin-top: 1.9rem; }
+  .header h1 { margin-top: 4rem; }
 }
 
 /* Selector dia/noche (las dos opciones a la vista) */
