@@ -68,6 +68,31 @@ $csrf = token_csrf();
   background-clip: text;
 }
 
+/* Logo Printika a la izquierda del header */
+.header-logo {
+  position: absolute;
+  top: 0.9rem;
+  left: 1.25rem;
+  display: inline-block;
+  line-height: 0;
+}
+.header-logo img {
+  height: 52px;
+  width: auto;
+  display: block;
+}
+/* version del logo segun tema: blanca en noche, oscura en dia */
+.header-logo .logo-light { display: none; }
+[data-theme="light"] .header-logo .logo-light { display: block; }
+[data-theme="light"] .header-logo .logo-dark { display: none; }
+
+@media (max-width: 700px) {
+  .header-logo img { height: 34px; }
+  .header-logo { top: 1rem; left: 1rem; }
+  /* bajar el titulo para que no choque con logo y selector */
+  .header h1 { margin-top: 1.9rem; }
+}
+
 /* Selector dia/noche (las dos opciones a la vista) */
 .theme-switch {
   position: absolute;
@@ -1021,6 +1046,10 @@ input[type="range"]::-moz-range-thumb {
 <body>
 
 <header class="header">
+  <a class="header-logo" href="https://printika3d.com" title="Printika 3D">
+    <img src="../assets/Innovacion-en-3D.svg" alt="Printika 3D" class="logo-light">
+    <img src="../assets/Innovacion-en-3D-dark.svg" alt="Printika 3D" class="logo-dark">
+  </a>
   <div class="theme-switch" role="group" aria-label="Elegir tema">
     <button type="button" class="theme-opt" data-theme-opt="light" aria-label="Modo dia" title="Modo dia">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
