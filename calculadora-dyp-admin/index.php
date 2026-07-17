@@ -78,7 +78,7 @@ $csrf = token_csrf();
   line-height: 0;
 }
 .header-logo img {
-  height: 156px;
+  height: 128px;
   width: auto;
   display: block;
 }
@@ -89,11 +89,11 @@ $csrf = token_csrf();
 
 /* pantallas medianas: un poco mas chico para no pisar el titulo */
 @media (max-width: 1100px) {
-  .header-logo img { height: 96px; }
+  .header-logo img { height: 82px; }
 }
 @media (max-width: 700px) {
   .header-logo { top: 0.9rem; left: 1rem; transform: none; }
-  .header-logo img { height: 64px; }
+  .header-logo img { height: 56px; }
   /* bajar el titulo para que no choque con logo y selector */
   .header h1 { margin-top: 4rem; }
 }
