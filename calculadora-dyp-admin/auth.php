@@ -52,6 +52,23 @@ function verificar_password($password) {
     return password_verify($password, $hash);
 }
 
+/** Usuario PRO: configurable en app_config (clave 'usuario_pro'); por defecto 'printika'. */
+function obtener_usuario_pro() {
+    try {
+        $stmt = db()->prepare('SELECT valor FROM app_config WHERE clave = ? LIMIT 1');
+        $stmt->execute(['usuario_pro']);
+        $row = $stmt->fetch();
+        return $row ? $row['valor'] : 'printika';
+    } catch (Exception $e) {
+        return 'printika';
+    }
+}
+
+function verificar_credenciales($usuario, $password) {
+    return strcasecmp(trim((string) $usuario), obtener_usuario_pro()) === 0
+        && verificar_password($password);
+}
+
 function token_csrf() {
     iniciar_sesion();
     if (empty($_SESSION['csrf'])) {

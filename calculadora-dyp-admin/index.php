@@ -1,9 +1,11 @@
 <?php
-// === Calculadora 3D · versión FREE (abre directo, sin login).
-//     Las funciones PRO se habilitan por suscripción (contacto por WhatsApp). ===
+// === Calculadora 3D · doble modo ===
+//  - Sin sesión: versión FREE (abre directo; lo PRO muestra el cartel de suscripción).
+//  - Con sesión (entrando por /login): versión PRO completa, todo desbloqueado.
 require_once __DIR__ . '/auth.php';
 iniciar_sesion();
-$csrf = token_csrf();
+$csrf  = token_csrf();
+$esPro = esta_logueado();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -67,6 +69,22 @@ $csrf = token_csrf();
   -webkit-background-clip: text;
   background-clip: text;
 }
+
+/* Indicador de sesion PRO (arriba a la derecha) */
+.pro-session {
+  position: absolute;
+  top: 0.7rem;
+  right: 1rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.pro-session strong { color: var(--accent); }
+.pro-session a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--text-muted);
+}
+.pro-session a:hover { color: var(--accent); }
 
 /* Logo Printika a la izquierda del header */
 .header-logo {
@@ -1043,7 +1061,7 @@ input[type="range"]::-moz-range-thumb {
 .pro-modal__close:hover { color: var(--text-secondary); }
 </style>
 <script>
-  window.APP = { api: 'api.php', csrf: <?php echo json_encode($csrf); ?> };
+  window.APP = { api: 'api.php', csrf: <?php echo json_encode($csrf); ?>, pro: <?php echo $esPro ? 'true' : 'false'; ?> };
   // Aplicar el tema guardado antes del primer pintado (evita destello)
   (function () {
     try {
@@ -1057,6 +1075,9 @@ input[type="range"]::-moz-range-thumb {
 <body>
 
 <header class="header">
+  <?php if ($esPro): ?>
+    <span class="pro-session">Modo <strong>PRO</strong> &middot; <a href="logout.php">Salir</a></span>
+  <?php endif; ?>
   <a class="header-logo" href="https://printika3d.com" title="Printika 3D">
     <img src="../assets/Innovacion-en-3D.svg" alt="Printika 3D" class="logo-light">
     <img src="../assets/Innovacion-en-3D-dark.svg" alt="Printika 3D" class="logo-dark">
@@ -1222,15 +1243,15 @@ input[type="range"]::-moz-range-thumb {
     <div class="field-grid">
       <div class="field">
         <label for="prepTime">Preparacion <span class="unit">(min)</span></label>
-        <input type="number" id="prepTime" value="0" min="0" step="1">
+        <input type="number" id="prepTime" value="<?php echo $esPro ? 15 : 0; ?>" min="0" step="1">
       </div>
       <div class="field">
         <label for="postTime">Post-proceso <span class="unit">(min)</span></label>
-        <input type="number" id="postTime" value="0" min="0" step="1">
+        <input type="number" id="postTime" value="<?php echo $esPro ? 10 : 0; ?>" min="0" step="1">
       </div>
       <div class="field">
         <label for="laborRate">Tarifa por hora <span class="unit" id="laborRateUnit">($)</span></label>
-        <input type="number" id="laborRate" value="0" min="0" step="100">
+        <input type="number" id="laborRate" value="<?php echo $esPro ? 3000 : 0; ?>" min="0" step="100">
       </div>
       <div class="field">
         <label>Costo mano de obra</label>
@@ -1249,7 +1270,7 @@ input[type="range"]::-moz-range-thumb {
     <div class="field-grid">
       <div class="field">
         <label for="printerCost">Costo impresora <span class="unit" id="printerCostUnit">($)</span></label>
-        <input type="number" id="printerCost" value="0" min="0" step="1000">
+        <input type="number" id="printerCost" value="<?php echo $esPro ? 500000 : 0; ?>" min="0" step="1000">
       </div>
       <div class="field">
         <label for="printerLifespan">Vida util <span class="unit">(horas)</span></label>
@@ -1257,7 +1278,7 @@ input[type="range"]::-moz-range-thumb {
       </div>
       <div class="field">
         <label for="maintenanceCost">Mantenimiento anual <span class="unit" id="maintenanceCostUnit">($)</span></label>
-        <input type="number" id="maintenanceCost" value="0" min="0" step="1000">
+        <input type="number" id="maintenanceCost" value="<?php echo $esPro ? 30000 : 0; ?>" min="0" step="1000">
       </div>
       <div class="field">
         <label>Depreciacion por hora</label>
@@ -1288,7 +1309,7 @@ input[type="range"]::-moz-range-thumb {
       </div>
       <div class="field">
         <label for="failureRate">Tasa de fallos <span class="unit">(%)</span></label>
-        <input type="number" id="failureRate" value="0" min="0" max="100" step="1">
+        <input type="number" id="failureRate" value="<?php echo $esPro ? 5 : 0; ?>" min="0" max="100" step="1">
       </div>
       <div class="field">
         <label for="otherCosts">Otros costos fijos <span class="unit" id="otherCostsUnit">($)</span></label>
@@ -1506,7 +1527,7 @@ input[type="range"]::-moz-range-thumb {
   </section>
 
   <!-- Saved Quotes (funcion PRO: oculta en la version FREE) -->
-  <section class="card quotes-card" id="sec-quotes" style="display:none;">
+  <section class="card quotes-card" id="sec-quotes"<?php if (!$esPro) echo ' style="display:none;"'; ?>>
     <div class="card-title">
       <span class="icon">&#128209;</span>
       Cotizaciones Guardadas
@@ -1991,16 +2012,16 @@ PRECIO FINAL: ${price}${meliInfo}
       printMinutes: '30',
       printerWatts: '200',
       electricRate: '239.17',
-      // Campos PRO: en la version FREE arrancan en 0 (no suman al precio)
-      prepTime: '0',
-      postTime: '0',
-      laborRate: '0',
-      printerCost: '0',
+      // Campos PRO: en FREE arrancan en 0 (no suman al precio); en PRO con valores tipicos
+      prepTime: IS_PRO ? '15' : '0',
+      postTime: IS_PRO ? '10' : '0',
+      laborRate: IS_PRO ? '3000' : '0',
+      printerCost: IS_PRO ? '500000' : '0',
       printerLifespan: '2000',
-      maintenanceCost: '0',
+      maintenanceCost: IS_PRO ? '30000' : '0',
       packagingCost: '0',
       shippingCost: '0',
-      failureRate: '0',
+      failureRate: IS_PRO ? '5' : '0',
       otherCosts: '0',
       marginSlider: '30',
       fixedPrice: '0',
@@ -2028,7 +2049,9 @@ PRECIO FINAL: ${price}${meliInfo}
     showToast('Valores reiniciados');
   };
 
-  // === Version FREE: funciones PRO bloqueadas con cartel de suscripcion ===
+  // === Modo FREE: funciones PRO bloqueadas con cartel de suscripcion.
+  //     Con sesion PRO (window.APP.pro) no se bloquea nada. ===
+  const IS_PRO = !!(window.APP && window.APP.pro);
   const proModal = $('proModal');
   window.showProModal = function (e) {
     if (e && e.preventDefault) { e.preventDefault(); e.stopPropagation(); }
@@ -2038,20 +2061,22 @@ PRECIO FINAL: ${price}${meliInfo}
   proModal.addEventListener('click', (ev) => { if (ev.target === proModal) closeProModal(); });
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeProModal(); });
 
-  // Secciones PRO: los controles no reciben eventos (pointer-events none),
-  // el click cae en la seccion y abre el cartel. Tab/teclado tambien bloqueado.
-  ['sec-additional', 'sec-meli', 'sec-labor', 'sec-depreciation', 'supportProRow'].forEach((id) => {
-    const sec = document.getElementById(id);
-    if (!sec) return;
-    sec.classList.add('pro-locked');
-    sec.addEventListener('click', showProModal);
-    sec.addEventListener('focusin', (ev) => { ev.target.blur(); showProModal(); });
-  });
+  if (!IS_PRO) {
+    // Secciones PRO: los controles no reciben eventos (pointer-events none),
+    // el click cae en la seccion y abre el cartel. Tab/teclado tambien bloqueado.
+    ['sec-additional', 'sec-meli', 'sec-labor', 'sec-depreciation', 'supportProRow'].forEach((id) => {
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      sec.classList.add('pro-locked');
+      sec.addEventListener('click', showProModal);
+      sec.addEventListener('focusin', (ev) => { ev.target.blur(); showProModal(); });
+    });
 
-  // Acciones PRO: guardar, exportar y compartir muestran el cartel.
-  window.saveQuote = showProModal;
-  window.exportPDF = showProModal;
-  window.shareQuote = showProModal;
+    // Acciones PRO: guardar, exportar y compartir muestran el cartel.
+    window.saveQuote = showProModal;
+    window.exportPDF = showProModal;
+    window.shareQuote = showProModal;
+  }
 
   // === Selector dia/noche ===
   const themeBtns = document.querySelectorAll('.theme-opt');
@@ -2066,7 +2091,8 @@ PRECIO FINAL: ${price}${meliInfo}
   themeBtns.forEach((b) => b.classList.toggle('active',
     b.dataset.themeOpt === (document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark')));
 
-  // Init (sin renderQuotes: guardado de cotizaciones es PRO)
+  // Init (las cotizaciones guardadas solo existen en modo PRO)
+  if (IS_PRO) renderQuotes();
   calculate();
 })();
 </script>

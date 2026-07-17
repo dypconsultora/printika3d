@@ -1,5 +1,12 @@
-# La pagina de inicio es la calculadora (protegida por login)
+# La pagina de inicio es la calculadora (version FREE abierta)
 DirectoryIndex index.php
+
+# URLs cortas: /login y /logout (sin .php)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^login/?$ login.php [L]
+  RewriteRule ^logout/?$ logout.php [L]
+</IfModule>
 
 # No mostrar el listado de archivos de la carpeta
 Options -Indexes
