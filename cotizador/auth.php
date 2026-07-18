@@ -69,6 +69,16 @@ function verificar_credenciales($usuario, $password) {
         && verificar_password($password);
 }
 
+/**
+ * Prueba PRO por tiempo limitado: todo lo PRO habilitado (sin login)
+ * hasta esta fecha inclusive. Despues vuelven los candados solos.
+ */
+define('PRO_TRIAL_HASTA', strtotime('2026-09-02 23:59:59 -03:00'));
+
+function trial_pro_activo() {
+    return time() < PRO_TRIAL_HASTA;
+}
+
 function token_csrf() {
     iniciar_sesion();
     if (empty($_SESSION['csrf'])) {

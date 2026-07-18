@@ -2,10 +2,15 @@
 // === Calculadora 3D · doble modo ===
 //  - Sin sesión: versión FREE (abre directo; lo PRO muestra el cartel de suscripción).
 //  - Con sesión (entrando por /login): versión PRO completa, todo desbloqueado.
+//  - Prueba por tiempo limitado (PRO_TRIAL_HASTA en auth.php): todo lo PRO
+//    habilitado para cualquiera, con contador regresivo. Al vencer, vuelven
+//    los candados automáticamente.
 require_once __DIR__ . '/auth.php';
 iniciar_sesion();
 $csrf  = token_csrf();
 $esPro = esta_logueado();
+$enTrial = !$esPro && trial_pro_activo();
+$proHabilitado = $esPro || $enTrial;
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -68,6 +73,30 @@ $esPro = esta_logueado();
   background: linear-gradient(135deg, #16202e 30%, var(--accent));
   -webkit-background-clip: text;
   background-clip: text;
+}
+
+/* Banner de prueba PRO con contador regresivo (debajo del nombre) */
+.trial-banner {
+  max-width: 640px;
+  margin: 0.9rem auto 0;
+  padding: 0.55rem 1rem;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  border-radius: 30px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.trial-banner strong { color: var(--text-primary); }
+.trial-count {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  white-space: nowrap;
 }
 
 /* Indicador de sesion PRO (arriba a la derecha) */
@@ -287,7 +316,8 @@ body {
 }
 
 .card-title .badge,
-.toggle-row .badge {
+.toggle-row .badge,
+.trial-banner .badge {
   font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -1061,7 +1091,7 @@ input[type="range"]::-moz-range-thumb {
 .pro-modal__close:hover { color: var(--text-secondary); }
 </style>
 <script>
-  window.APP = { api: 'api.php', csrf: <?php echo json_encode($csrf); ?>, pro: <?php echo $esPro ? 'true' : 'false'; ?> };
+  window.APP = { api: 'api.php', csrf: <?php echo json_encode($csrf); ?>, pro: <?php echo $proHabilitado ? 'true' : 'false'; ?>, trial: <?php echo $enTrial ? 'true' : 'false'; ?>, trialEnd: <?php echo PRO_TRIAL_HASTA * 1000; ?> };
   // Aplicar el tema guardado antes del primer pintado (evita destello)
   (function () {
     try {
@@ -1096,6 +1126,13 @@ input[type="range"]::-moz-range-thumb {
     <label for="projectName">Proyecto</label>
     <input type="text" id="projectName" placeholder="Nombre del proyecto...">
   </div>
+  <?php if ($enTrial): ?>
+  <div class="trial-banner" id="trialBanner">
+    <span class="badge">PRO</span>
+    Versi&oacute;n PRO habilitada por tiempo limitado &middot; se deshabilita el <strong>02/09/2026</strong>
+    <span class="trial-count" id="trialCount">&hellip;</span>
+  </div>
+  <?php endif; ?>
 </header>
 
 <main class="container">
@@ -1243,15 +1280,15 @@ input[type="range"]::-moz-range-thumb {
     <div class="field-grid">
       <div class="field">
         <label for="prepTime">Preparacion <span class="unit">(min)</span></label>
-        <input type="number" id="prepTime" value="<?php echo $esPro ? 15 : 0; ?>" min="0" step="1">
+        <input type="number" id="prepTime" value="<?php echo $proHabilitado ? 15 : 0; ?>" min="0" step="1">
       </div>
       <div class="field">
         <label for="postTime">Post-proceso <span class="unit">(min)</span></label>
-        <input type="number" id="postTime" value="<?php echo $esPro ? 10 : 0; ?>" min="0" step="1">
+        <input type="number" id="postTime" value="<?php echo $proHabilitado ? 10 : 0; ?>" min="0" step="1">
       </div>
       <div class="field">
         <label for="laborRate">Tarifa por hora <span class="unit" id="laborRateUnit">($)</span></label>
-        <input type="number" id="laborRate" value="<?php echo $esPro ? 3000 : 0; ?>" min="0" step="100">
+        <input type="number" id="laborRate" value="<?php echo $proHabilitado ? 3000 : 0; ?>" min="0" step="100">
       </div>
       <div class="field">
         <label>Costo mano de obra</label>
@@ -1270,7 +1307,7 @@ input[type="range"]::-moz-range-thumb {
     <div class="field-grid">
       <div class="field">
         <label for="printerCost">Costo impresora <span class="unit" id="printerCostUnit">($)</span></label>
-        <input type="number" id="printerCost" value="<?php echo $esPro ? 500000 : 0; ?>" min="0" step="1000">
+        <input type="number" id="printerCost" value="<?php echo $proHabilitado ? 500000 : 0; ?>" min="0" step="1000">
       </div>
       <div class="field">
         <label for="printerLifespan">Vida util <span class="unit">(horas)</span></label>
@@ -1278,7 +1315,7 @@ input[type="range"]::-moz-range-thumb {
       </div>
       <div class="field">
         <label for="maintenanceCost">Mantenimiento anual <span class="unit" id="maintenanceCostUnit">($)</span></label>
-        <input type="number" id="maintenanceCost" value="<?php echo $esPro ? 30000 : 0; ?>" min="0" step="1000">
+        <input type="number" id="maintenanceCost" value="<?php echo $proHabilitado ? 30000 : 0; ?>" min="0" step="1000">
       </div>
       <div class="field">
         <label>Depreciacion por hora</label>
@@ -1309,7 +1346,7 @@ input[type="range"]::-moz-range-thumb {
       </div>
       <div class="field">
         <label for="failureRate">Tasa de fallos <span class="unit">(%)</span></label>
-        <input type="number" id="failureRate" value="<?php echo $esPro ? 5 : 0; ?>" min="0" max="100" step="1">
+        <input type="number" id="failureRate" value="<?php echo $proHabilitado ? 5 : 0; ?>" min="0" max="100" step="1">
       </div>
       <div class="field">
         <label for="otherCosts">Otros costos fijos <span class="unit" id="otherCostsUnit">($)</span></label>
@@ -1527,7 +1564,7 @@ input[type="range"]::-moz-range-thumb {
   </section>
 
   <!-- Saved Quotes (funcion PRO: oculta en la version FREE) -->
-  <section class="card quotes-card" id="sec-quotes"<?php if (!$esPro) echo ' style="display:none;"'; ?>>
+  <section class="card quotes-card" id="sec-quotes"<?php if (!$proHabilitado) echo ' style="display:none;"'; ?>>
     <div class="card-title">
       <span class="icon">&#128209;</span>
       Cotizaciones Guardadas
@@ -2090,6 +2127,24 @@ PRECIO FINAL: ${price}${meliInfo}
   // marcar el boton activo segun el tema ya aplicado en el <head>
   themeBtns.forEach((b) => b.classList.toggle('active',
     b.dataset.themeOpt === (document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark')));
+
+  // === Contador regresivo de la prueba PRO ===
+  const trialCount = $('trialCount');
+  if (trialCount && window.APP.trialEnd) {
+    const fin = window.APP.trialEnd;
+    const pad = (n) => String(n).padStart(2, '0');
+    function tickTrial() {
+      let ms = fin - Date.now();
+      if (ms <= 0) { location.reload(); return; } // vencio: vuelven los candados
+      const d = Math.floor(ms / 86400000);
+      const h = Math.floor(ms / 3600000) % 24;
+      const m = Math.floor(ms / 60000) % 60;
+      const s = Math.floor(ms / 1000) % 60;
+      trialCount.textContent = 'Quedan ' + d + (d === 1 ? ' dia ' : ' dias ') + pad(h) + ':' + pad(m) + ':' + pad(s);
+    }
+    tickTrial();
+    setInterval(tickTrial, 1000);
+  }
 
   // Init (las cotizaciones guardadas solo existen en modo PRO)
   if (IS_PRO) renderQuotes();
