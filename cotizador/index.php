@@ -2203,6 +2203,13 @@ PRECIO FINAL: ${price}${meliInfo}
     newsModal.addEventListener('click', (ev) => { if (ev.target === newsModal) cerrarNews(); });
     document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') cerrarNews(); });
     $('newsClose').addEventListener('click', cerrarNews);
+
+    // Reiniciar: ademas de resetear los valores, vuelve a mostrar el popup
+    const resetOriginal = window.resetAll;
+    window.resetAll = function () {
+      resetOriginal();
+      newsModal.classList.add('open');
+    };
     $('newsForm').addEventListener('submit', async (ev) => {
       ev.preventDefault();
       const email = $('newsEmail').value.trim();
