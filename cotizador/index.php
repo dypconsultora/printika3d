@@ -1089,9 +1089,56 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 .pro-modal__close:hover { color: var(--text-secondary); }
+
+/* Popup de novedades (mismo estilo que el cartel PRO) */
+.news-label {
+  display: block;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+.news-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  margin-bottom: 1rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.news-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+.pro-modal__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 13px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.2s;
+}
+.pro-modal__cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.pro-modal__cta:disabled { opacity: 0.6; cursor: default; transform: none; }
 </style>
 <script>
-  window.APP = { api: 'api.php', csrf: <?php echo json_encode($csrf); ?>, pro: <?php echo $proHabilitado ? 'true' : 'false'; ?>, trial: <?php echo $enTrial ? 'true' : 'false'; ?>, trialEnd: <?php echo PRO_TRIAL_HASTA * 1000; ?> };
+  window.APP = { api: 'api.php', csrf: <?php echo json_encode($csrf); ?>, pro: <?php echo $proHabilitado ? 'true' : 'false'; ?>, sesion: <?php echo $esPro ? 'true' : 'false'; ?>, trial: <?php echo $enTrial ? 'true' : 'false'; ?>, trialEnd: <?php echo PRO_TRIAL_HASTA * 1000; ?> };
   // Aplicar el tema guardado antes del primer pintado (evita destello)
   (function () {
     try {
@@ -1564,7 +1611,7 @@ input[type="range"]::-moz-range-thumb {
   </section>
 
   <!-- Saved Quotes (funcion PRO: oculta en la version FREE) -->
-  <section class="card quotes-card" id="sec-quotes"<?php if (!$proHabilitado) echo ' style="display:none;"'; ?>>
+  <section class="card quotes-card" id="sec-quotes"<?php if (!$esPro) echo ' style="display:none;"'; ?>>
     <div class="card-title">
       <span class="icon">&#128209;</span>
       Cotizaciones Guardadas
@@ -1588,6 +1635,20 @@ input[type="range"]::-moz-range-thumb {
     </a>
     <button class="pro-modal__close" onclick="closeProModal()">Cerrar</button>
   </div>
+</div>
+
+<!-- Popup de novedades: captura de email -->
+<div class="pro-modal" id="newsModal" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle">
+  <form class="pro-modal__card" id="newsForm" novalidate>
+    <span class="pro-modal__badge">NOVEDADES</span>
+    <h2 id="newsModalTitle">&iexcl;No te pierdas lo que viene!</h2>
+    <p>Para enterarte de nuevas herramientas y novedades dejanos tu email.</p>
+    <label class="news-label" for="newsEmail">Ingres&aacute; tu email</label>
+    <input class="news-input" type="email" id="newsEmail" name="email" placeholder="tu@email.com" autocomplete="email" required>
+    <input type="text" id="newsHoney" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" aria-hidden="true">
+    <button class="pro-modal__cta" id="newsSubmit" type="submit">Quiero enterarme</button>
+    <button class="pro-modal__close" id="newsClose" type="button">Ahora no</button>
+  </form>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -2086,9 +2147,11 @@ PRECIO FINAL: ${price}${meliInfo}
     showToast('Valores reiniciados');
   };
 
-  // === Modo FREE: funciones PRO bloqueadas con cartel de suscripcion.
-  //     Con sesion PRO (window.APP.pro) no se bloquea nada. ===
+  // === Bloqueos PRO ===
+  //  IS_PRO: campos PRO habilitados (sesion o prueba por tiempo limitado).
+  //  IS_SESION: sesion PRO real (login) — unica que puede usar las Acciones.
   const IS_PRO = !!(window.APP && window.APP.pro);
+  const IS_SESION = !!(window.APP && window.APP.sesion);
   const proModal = $('proModal');
   window.showProModal = function (e) {
     if (e && e.preventDefault) { e.preventDefault(); e.stopPropagation(); }
@@ -2108,8 +2171,11 @@ PRECIO FINAL: ${price}${meliInfo}
       sec.addEventListener('click', showProModal);
       sec.addEventListener('focusin', (ev) => { ev.target.blur(); showProModal(); });
     });
+  }
 
-    // Acciones PRO: guardar, exportar y compartir muestran el cartel.
+  if (!IS_SESION) {
+    // Acciones PRO: guardar, exportar y compartir muestran el cartel
+    // (tambien durante la prueba: son exclusivas de la suscripcion).
     window.saveQuote = showProModal;
     window.exportPDF = showProModal;
     window.shareQuote = showProModal;
@@ -2127,6 +2193,48 @@ PRECIO FINAL: ${price}${meliInfo}
   // marcar el boton activo segun el tema ya aplicado en el <head>
   themeBtns.forEach((b) => b.classList.toggle('active',
     b.dataset.themeOpt === (document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark')));
+
+  // === Popup de novedades (captura de email) ===
+  const newsModal = $('newsModal');
+  if (newsModal) {
+    const NEWS_KEY = 'calc3d-news';
+    let newsVisto = false;
+    try { newsVisto = !!localStorage.getItem(NEWS_KEY); } catch (e) {}
+    const cerrarNews = (recordar) => {
+      newsModal.classList.remove('open');
+      if (recordar) { try { localStorage.setItem(NEWS_KEY, '1'); } catch (e) {} }
+    };
+    if (!newsVisto) {
+      setTimeout(() => newsModal.classList.add('open'), 12000);
+    }
+    newsModal.addEventListener('click', (ev) => { if (ev.target === newsModal) cerrarNews(true); });
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') cerrarNews(false); });
+    $('newsClose').addEventListener('click', () => cerrarNews(true));
+    $('newsForm').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const email = $('newsEmail').value.trim();
+      if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        showToast('Ingresa un email valido');
+        return;
+      }
+      const btn = $('newsSubmit');
+      btn.disabled = true;
+      try {
+        const res = await fetch('suscribir.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': (window.APP && window.APP.csrf) || '' },
+          body: JSON.stringify({ email: email, website: $('newsHoney').value })
+        });
+        const r = await res.json();
+        if (!r || !r.ok) throw new Error((r && r.error) || 'Error');
+        cerrarNews(true);
+        showToast('Gracias! Te vamos a avisar de las novedades.');
+      } catch (e) {
+        showToast('No se pudo enviar: ' + e.message);
+        btn.disabled = false;
+      }
+    });
+  }
 
   // === Contador regresivo de la prueba PRO ===
   const trialCount = $('trialCount');
@@ -2146,8 +2254,8 @@ PRECIO FINAL: ${price}${meliInfo}
     setInterval(tickTrial, 1000);
   }
 
-  // Init (las cotizaciones guardadas solo existen en modo PRO)
-  if (IS_PRO) renderQuotes();
+  // Init (las cotizaciones guardadas son solo de la sesion PRO)
+  if (IS_SESION) renderQuotes();
   calculate();
 })();
 </script>

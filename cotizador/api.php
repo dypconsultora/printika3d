@@ -9,10 +9,9 @@
 require_once __DIR__ . '/auth.php';
 
 header('Content-Type: application/json; charset=utf-8');
-// Durante la prueba PRO por tiempo limitado no se exige sesion.
-if (!trial_pro_activo()) {
-    requerir_login_api();
-}
+// Guardar/listar/borrar cotizaciones es solo para la sesion PRO
+// (incluso durante la prueba, las Acciones muestran el cartel).
+requerir_login_api();
 
 $action = $_GET['action'] ?? '';
 
