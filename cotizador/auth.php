@@ -72,8 +72,10 @@ function verificar_credenciales($usuario, $password) {
 /**
  * Prueba PRO por tiempo limitado: todo lo PRO habilitado (sin login)
  * hasta esta fecha inclusive. Despues vuelven los candados solos.
+ * DESACTIVADA en printika3d.com (la prueba vive en printikatools.com):
+ * con fecha 0 todo lo PRO queda bloqueado salvo sesion via /login.
  */
-define('PRO_TRIAL_HASTA', strtotime('2026-09-02 23:59:59 -03:00'));
+define('PRO_TRIAL_HASTA', 0);
 
 function trial_pro_activo() {
     return time() < PRO_TRIAL_HASTA;
