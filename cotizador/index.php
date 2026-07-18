@@ -2195,21 +2195,14 @@ PRECIO FINAL: ${price}${meliInfo}
     b.dataset.themeOpt === (document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark')));
 
   // === Popup de novedades (captura de email) ===
+  // Se muestra en CADA visita/recarga, apenas entra el usuario.
   const newsModal = $('newsModal');
   if (newsModal) {
-    const NEWS_KEY = 'calc3d-news';
-    let newsVisto = false;
-    try { newsVisto = !!localStorage.getItem(NEWS_KEY); } catch (e) {}
-    const cerrarNews = (recordar) => {
-      newsModal.classList.remove('open');
-      if (recordar) { try { localStorage.setItem(NEWS_KEY, '1'); } catch (e) {} }
-    };
-    if (!newsVisto) {
-      setTimeout(() => newsModal.classList.add('open'), 12000);
-    }
-    newsModal.addEventListener('click', (ev) => { if (ev.target === newsModal) cerrarNews(true); });
-    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') cerrarNews(false); });
-    $('newsClose').addEventListener('click', () => cerrarNews(true));
+    const cerrarNews = () => newsModal.classList.remove('open');
+    setTimeout(() => newsModal.classList.add('open'), 1200);
+    newsModal.addEventListener('click', (ev) => { if (ev.target === newsModal) cerrarNews(); });
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') cerrarNews(); });
+    $('newsClose').addEventListener('click', cerrarNews);
     $('newsForm').addEventListener('submit', async (ev) => {
       ev.preventDefault();
       const email = $('newsEmail').value.trim();
@@ -2227,7 +2220,7 @@ PRECIO FINAL: ${price}${meliInfo}
         });
         const r = await res.json();
         if (!r || !r.ok) throw new Error((r && r.error) || 'Error');
-        cerrarNews(true);
+        cerrarNews();
         showToast('Gracias! Te vamos a avisar de las novedades.');
       } catch (e) {
         showToast('No se pudo enviar: ' + e.message);
